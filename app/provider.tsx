@@ -2,6 +2,7 @@
 import React from 'react';
 
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function Provider({
   children,
@@ -9,14 +10,16 @@ function Provider({
   children: React.ReactNode;
 }>) {
   return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <div>{children}</div>
-    </NextThemesProvider>
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
+      <NextThemesProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <div>{children}</div>
+      </NextThemesProvider>
+    </GoogleOAuthProvider>
   );
 }
 
