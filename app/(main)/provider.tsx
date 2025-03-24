@@ -46,7 +46,9 @@ function Provider({
         email: user?.email,
       });
       setUser(result);
-    } catch (e) {}
+    } catch (error) {
+      console.error('CheckUseAuth error::', error);
+    }
   };
 
   return (

@@ -1,18 +1,16 @@
-import React from 'react'
+import React from 'react';
 import Provider from './provider';
 
 function WorkspaceLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <div>
-            <Provider>
-                {children}
-            </Provider>
-        </div>
-    )
+  return (
+    <div>
+      <Provider>{children}</Provider>
+    </div>
+  );
 }
 
-export default WorkspaceLayout
+export default WorkspaceLayout;

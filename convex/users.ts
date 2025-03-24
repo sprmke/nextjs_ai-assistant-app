@@ -13,7 +13,7 @@ export const CreateUser = mutation({
       .query('users')
       .filter((c) => c.eq(c.field('email'), args.email))
       .collect();
-    const [user] = result;
+    const [user] = result ?? [];
 
     console.log('user::', user);
 
@@ -39,11 +39,12 @@ export const GetUser = query({
     email: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
+    const result = await ctx.db
       .query('users')
       .filter((q) => q.eq(q.field('email'), args.email))
       .collect();
+    const [user] = result ?? [];
 
-    return user[0];
+    return user;
   },
 });

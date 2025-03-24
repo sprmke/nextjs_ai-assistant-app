@@ -6,7 +6,6 @@ import React, { useContext } from 'react';
 
 function Header() {
   const { user } = useContext(AuthContext);
-  console.log('user::', user);
 
   return (
     <div className="p-3 fixed shadow-sm w-full flex justify-between items-center px-14">
@@ -14,7 +13,7 @@ function Header() {
 
       {user?.picture && (
         <Image
-          src={user?.picture ?? ''}
+          src={user?.picture}
           alt="App Logo"
           width={40}
           height={40}
