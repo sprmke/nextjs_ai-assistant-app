@@ -24,7 +24,7 @@ function SignIn() {
       console.log(tokenResponse);
 
       if (typeof window !== 'undefined') {
-        localStorage.setItem('access_token', tokenResponse.access_token);
+        localStorage.setItem('user_token', tokenResponse.access_token);
       }
 
       const { name, email, picture } = await GetAuthUserData(
