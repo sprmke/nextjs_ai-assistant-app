@@ -11,10 +11,13 @@ import { GetAuthUserData } from '@/services/GlobalApi';
 
 import { Button } from '@/components/ui/button';
 import { AuthContext } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 function SignIn() {
   const CreateUser = useMutation(api.users.CreateUser);
   const { user, setUser } = useContext(AuthContext);
+
+  const router = useRouter();
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -36,6 +39,9 @@ function SignIn() {
       });
 
       setUser(newUser);
+
+      // Redirect to home page
+      router.replace('/ai-assistants');
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
@@ -46,7 +52,7 @@ function SignIn() {
         className="flex flex-col items-center
         gap-5 border rounded-2xl p-10 shadow-md"
       >
-        <Image src={'/logo.svg'} alt="logo" width={50} height={50} />
+        <Image src={'/logo.svg'} alt="App Logo" width={50} height={50} />
         <h2 className="text-2xl">Sign In To AI Personal Assistant</h2>
 
         <Button onClick={() => googleLogin()}>Sign in With Gmail</Button>
