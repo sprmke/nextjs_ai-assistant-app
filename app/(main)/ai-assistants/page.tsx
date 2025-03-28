@@ -17,31 +17,21 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { AuthContext } from '@/context/AuthContext';
 
 import { aiAssistantsList } from '@/services/AiAssistantsList';
-
-export type Assistant = {
-  id: number;
-  name: string;
-  title: string;
-  image: string;
-  instruction: string;
-  userInstruction: string;
-  sampleQuestions: string[];
-  aiModelId?: string;
-};
+import { AiAssistant, AiAssistants } from '@/app/(main)/types';
 
 function AIAssistants() {
   const router = useRouter();
   const convex = useConvex();
-
-  const [selectedAssistants, setSelectedAssistants] = useState<
-    Assistant[] | []
-  >([]);
-  const [loading, setLoading] = useState(false);
+  const { user } = useContext(AuthContext);
 
   const insertAssistant = useMutation(
-    api.userAiAssistants.InsertSelectedAssistants
+    api.userAiAssistants.addSelectedAssistants
   );
-  const { user } = useContext(AuthContext);
+
+  const [loading, setLoading] = useState(false);
+  const [selectedAssistants, setSelectedAssistants] = useState<AiAssistants>(
+    []
+  );
 
   useEffect(() => {
     if (!user) return;
@@ -51,7 +41,7 @@ function AIAssistants() {
 
   const getUserAssistants = async () => {
     const userAssistants = await convex.query(
-      api.userAiAssistants.GetAllUserAssistants,
+      api.userAiAssistants.getAllUserAssistants,
       {
         userId: user._id,
       }
@@ -59,16 +49,16 @@ function AIAssistants() {
     console.log(userAssistants);
 
     if (userAssistants.length) {
-      // Navigate to New Screen
-      router.replace('/workspace');
+      // Navigate to workspace page
+      // router.replace('/workspace');
     }
   };
 
-  const isAssistantSelected = (assistant: Assistant) => {
+  const isAssistantSelected = (assistant: AiAssistant) => {
     return !!selectedAssistants.find(({ id }) => id == assistant.id);
   };
 
-  const onSelect = (assistant: Assistant) => {
+  const onSelect = (assistant: AiAssistant) => {
     const item = selectedAssistants.find(({ id }) => id == assistant.id);
 
     if (item) {
@@ -84,8 +74,11 @@ function AIAssistants() {
   const onClickContinue = async () => {
     setLoading(true);
     const result = await insertAssistant({
-      aiAssistants: selectedAssistants,
-      userId: user?._id,
+      aiAssistants: selectedAssistants.map((aiAssistant) => ({
+        ...aiAssistant,
+        userId: user?._id,
+        aiModelId: 'Google: Gemini 2.0 Flash',
+      })),
     });
     setLoading(false);
     router.replace('/workspace');
@@ -126,11 +119,11 @@ function AIAssistants() {
               key={index}
               className="hover:border p-3 rounded-xl hover:scale-105 
                 transition-all ease-in-out cursor-pointer relative"
-              onClick={() => onSelect(assistant)}
+              onClick={() => onSelect(assistant as AiAssistant)}
             >
               <Checkbox
                 className="absolute m-2"
-                checked={isAssistantSelected(assistant)}
+                checked={isAssistantSelected(assistant as AiAssistant)}
               />
               <Image
                 src={assistant.image}
