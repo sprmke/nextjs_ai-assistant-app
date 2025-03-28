@@ -1,9 +1,7 @@
 import React from 'react';
 
-import AssistantList from './_components/AssistantList';
-import AssistantSettings from './_components/AssistantSettings';
-
-import ChatUi from './_components/ChatUi';
+import AssistantList from '@/app/(main)/workspace/_components/AssistantList';
+import AssistantSettings from '@/app/(main)/workspace/_components/AssistantSettings';
 
 function Workspace() {
   return (
@@ -13,7 +11,9 @@ function Workspace() {
           <AssistantList />
         </div>
         <div className=" md:col-span-2 lg:col-span-3">{/* Chat UI */}</div>
-        <div className="hidden lg:block">{/* Assistant Settings */}</div>
+        <div className="hidden lg:block">
+          <AssistantSettings />
+        </div>
       </div>
     </div>
   );
