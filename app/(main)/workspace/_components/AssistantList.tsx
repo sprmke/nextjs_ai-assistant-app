@@ -3,7 +3,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,30 +15,29 @@ import { api } from '@/convex/_generated/api';
 import { AuthContext } from '@/context/AuthContext';
 import { AssistantContext } from '@/context/AssistantContext';
 
-import type { Assistants } from '@/app/(main)/types';
+import type { AiAssistants } from '@/app/(main)/types';
 
 function AssistantList() {
-  const router = useRouter();
   const convex = useConvex();
 
   const { user, setUser } = useContext(AuthContext);
   const { assistant, setAssistant } = useContext(AssistantContext);
 
-  const [assistants, setAssistants] = useState<Assistants>([]);
+  const [assistants, setAssistants] = useState<AiAssistants>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || assistant) return;
 
     getUserAssistants();
-  }, [user && assistant == null]);
+  }, [user, assistant]);
 
   const getUserAssistants = async () => {
     setLoading(true);
     setAssistants([]);
 
     const assistants = await convex.query(
-      api.userAiAssistants.GetAllUserAssistants,
+      api.userAiAssistants.getAllUserAssistants,
       {
         userId: user._id,
       }
@@ -61,7 +59,7 @@ function AssistantList() {
 
       <Input className="bg-white mt-3" placeholder="Search assistant" />
 
-      <div className="mt-5 overflow-scroll h-[64%]">
+      <div className="mt-5 overflow-auto h-[64%]">
         {assistants.map((_assistant, index) => (
           <BlurFade key={_assistant.image} delay={0.25 + index * 0.05} inView>
             <div
