@@ -9,6 +9,8 @@ export const aiAssistant = {
   instruction: v.string(),
   userInstruction: v.string(),
   sampleQuestions: v.array(v.string()),
+  aiModelId: v.optional(v.string()),
+  userId: v.id('users'),
 };
 
 export default defineSchema({
@@ -19,8 +21,5 @@ export default defineSchema({
     credits: v.number(),
     orderId: v.optional(v.string()),
   }),
-  userAiAssistants: defineTable({
-    ...aiAssistant,
-    userId: v.id('users'),
-  }),
+  userAiAssistants: defineTable(aiAssistant),
 });
