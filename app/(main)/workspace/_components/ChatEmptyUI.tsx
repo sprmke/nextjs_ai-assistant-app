@@ -6,7 +6,6 @@ import { SparklesText } from '@/components/magicui/sparkles-text';
 
 import { AssistantContext } from '@/context/AssistantContext';
 import { BlurFade } from '@/components/magicui/blur-fade';
-import { TextAnimate } from '@/components/magicui/text-animate';
 
 function ChatEmptyUI() {
   const { assistant, setAssistant } = useContext(AssistantContext);
