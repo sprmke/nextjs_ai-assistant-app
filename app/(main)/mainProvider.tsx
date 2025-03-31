@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import { GetAuthUserData } from '@/services/GlobalApi';
 
-import Header from './_components/Header';
+import Header from '@/app/(main)/_components/Header';
 import { useConvex } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 
