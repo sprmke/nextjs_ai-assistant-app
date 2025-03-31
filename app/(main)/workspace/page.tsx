@@ -6,7 +6,7 @@ import AssistantSettings from '@/app/(main)/workspace/_components/AssistantSetti
 
 function Workspace() {
   return (
-    <div className="h-screen fixed w-full">
+    <div className="h-screen fixed w-full bg-white">
       <div className="grid md:grid-cols-5">
         <div className="hidden lg:block  col-span-1">
           <AssistantList />
