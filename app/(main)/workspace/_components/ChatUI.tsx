@@ -68,29 +68,33 @@ function ChatUI() {
 
   return (
     <div className="flex flex-col h-full">
-      {!messages?.length && <ChatEmptyUI />}
-
-      <div
-        ref={scrollRef}
-        className="p-6 flex flex-col flex-1 max-h-[calc(100vh-76px)] overflow-y-auto scrollbar-hide"
-      >
-        {messages.map(({ role, content }, index) => (
-          <ChatMessage
-            key={index}
-            role={role}
-            content={content}
-            assistantImage={role === 'assistant' ? assistant.image : undefined}
-          />
-        ))}
-        {isLoading && (
-          <ChatMessage
-            role="assistant"
-            content="Loading..."
-            assistantImage={assistant.image}
-            isLoading={true}
-          />
-        )}
-      </div>
+      {!messages?.length ? (
+        <ChatEmptyUI />
+      ) : (
+        <div
+          ref={scrollRef}
+          className="p-6 flex flex-col flex-1 max-h-[calc(100vh-76px)] overflow-y-auto scrollbar-hide"
+        >
+          {messages.map(({ role, content }, index) => (
+            <ChatMessage
+              key={index}
+              role={role}
+              content={content}
+              assistantImage={
+                role === 'assistant' ? assistant.image : undefined
+              }
+            />
+          ))}
+          {isLoading && (
+            <ChatMessage
+              role="assistant"
+              content="Loading..."
+              assistantImage={assistant.image}
+              isLoading={true}
+            />
+          )}
+        </div>
+      )}
 
       <div className="flex justify-between p-5 gap-2">
         <Input
