@@ -24,11 +24,9 @@ function AIAssistants() {
   const convex = useConvex();
   const { user } = useContext(AuthContext);
 
-  const insertAssistant = useMutation(
-    api.userAiAssistants.addSelectedAssistants
-  );
+  const addAssistants = useMutation(api.userAiAssistants.addAssistants);
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedAssistants, setSelectedAssistants] = useState<AiAssistants>(
     []
   );
@@ -40,17 +38,18 @@ function AIAssistants() {
   }, [user]);
 
   const getUserAssistants = async () => {
+    setIsLoading(true);
     const userAssistants = await convex.query(
       api.userAiAssistants.getAllUserAssistants,
       {
         userId: user._id,
       }
     );
-    console.log(userAssistants);
 
     if (userAssistants.length) {
-      // Navigate to workspace page
-      // router.replace('/workspace');
+      router.replace('/workspace');
+    } else {
+      setIsLoading(false);
     }
   };
 
@@ -58,7 +57,7 @@ function AIAssistants() {
     return !!selectedAssistants.find(({ id }) => id == assistant.id);
   };
 
-  const onSelect = (assistant: AiAssistant) => {
+  const selectAssistant = (assistant: AiAssistant) => {
     const item = selectedAssistants.find(({ id }) => id == assistant.id);
 
     if (item) {
@@ -71,21 +70,24 @@ function AIAssistants() {
     setSelectedAssistants((prevAssistants) => [...prevAssistants, assistant]);
   };
 
-  const onClickContinue = async () => {
-    setLoading(true);
-    const result = await insertAssistant({
+  const saveSelectedAssistants = async () => {
+    setIsLoading(true);
+    await addAssistants({
       aiAssistants: selectedAssistants.map((aiAssistant) => ({
         ...aiAssistant,
         userId: user?._id,
-        aiModelId: 'Google: Gemini 2.0 Flash',
+        aiModelId: 'google/gemini-2.0-flash',
       })),
     });
-    setLoading(false);
+    setIsLoading(false);
     router.replace('/workspace');
-    console.log(result);
   };
 
-  return (
+  return isLoading ? (
+    <div className="flex h-screen w-screen items-center justify-center">
+      <Loader2Icon className="animate-spin" size={35} />
+    </div>
+  ) : (
     <div className="px-10 mt-20 md:px-28 lg:px-36 xl:px-48">
       <div className="flex justify-between items-center">
         <div>
@@ -101,11 +103,10 @@ function AIAssistants() {
           </BlurFade>
         </div>
         <RainbowButton
-          disabled={selectedAssistants?.length == 0 || loading}
-          onClick={onClickContinue}
+          disabled={selectedAssistants?.length == 0 || isLoading}
+          onClick={saveSelectedAssistants}
         >
-          {' '}
-          {loading && <Loader2Icon className="animate-spin" />} Continue
+          {isLoading && <Loader2Icon className="animate-spin" />} Continue
         </RainbowButton>
       </div>
 
@@ -114,12 +115,11 @@ function AIAssistants() {
         lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-5"
       >
         {aiAssistantsList.map((assistant, index) => (
-          <BlurFade key={assistant.image} delay={0.25 + index * 0.05} inView>
+          <BlurFade key={index} delay={0.25 + index * 0.05} inView>
             <div
-              key={index}
               className="hover:border p-3 rounded-xl hover:scale-105 
                 transition-all ease-in-out cursor-pointer relative"
-              onClick={() => onSelect(assistant as AiAssistant)}
+              onClick={() => selectAssistant(assistant as AiAssistant)}
             >
               <Checkbox
                 className="absolute m-2"
