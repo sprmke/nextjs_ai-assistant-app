@@ -76,7 +76,7 @@ function UserProfile({
   const makePayment = async (subscriptionId?: string) => {
     if (!subscriptionId || !user) return;
 
-    let options = {
+    const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_LIVE_KEY,
       subscription_id: subscriptionId,
       name: 'AI Assistant App',

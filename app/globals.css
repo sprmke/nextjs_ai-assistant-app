@@ -4,7 +4,6 @@
 
 @layer base {
   :root {
-
     --background: 0 0% 100%;
 
     --foreground: 0 0% 3.9%;
@@ -63,9 +62,9 @@
 
     --color-4: 195 100% 63%;
 
-    --color-5: 90 100% 63%}
+    --color-5: 90 100% 63%;
+  }
   .dark {
-
     --background: 0 0% 3.9%;
 
     --foreground: 0 0% 98%;
@@ -122,10 +121,9 @@
 
     --color-4: 195 100% 63%;
 
-    --color-5: 90 100% 63%}
+    --color-5: 90 100% 63%;
+  }
 }
-
-
 
 @layer base {
   * {
@@ -135,12 +133,6 @@
     @apply bg-background text-foreground;
   }
 }
-
-
-
-
-
-
 
 @layer base {
   * {
