@@ -1,21 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import Image from 'next/image';
+
+import axios from 'axios';
+
+import { api } from '@/convex/_generated/api';
+import { useMutation } from 'convex/react';
+
+import { WalletCardsIcon } from 'lucide-react';
+import { Loader2Icon } from 'lucide-react';
+
+import { toast } from 'sonner';
+
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 import { AuthContext } from '@/context/AuthContext';
 
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { WalletCardsIcon } from 'lucide-react';
-import { Loader2Icon } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
+const PRO_PLAN_CREDITS = 10000;
+const FREE_PLAN_CREDITS = 5000;
 
 function UserProfile({
   openUserProfile,
@@ -26,12 +36,76 @@ function UserProfile({
 }) {
   const { user } = useContext(AuthContext);
 
+  const updateUserTokens = useMutation(api.users.UpdateUserTokens);
+
   const [userMaxToken, setUserMaxToken] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setUserMaxToken(user?.orderId ? 10000 : 5000);
+    setUserMaxToken(user?.orderId ? PRO_PLAN_CREDITS : FREE_PLAN_CREDITS);
   }, [user?.orderId]);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => console.log('Razorpay script loaded');
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const createSubscription = async () => {
+    setIsLoading(true);
+    const result = await axios.post('/api/create-subscription');
+    setIsLoading(false);
+    makePayment(result?.data?.id);
+  };
+
+  const cancelSubscription = async () => {
+    const result = await axios.post('/api/cancel-subscription', {
+      subscriptionId: user?.orderId,
+    });
+    console.log(result);
+    toast('Subscription Canceled');
+    window.location.reload();
+  };
+
+  const makePayment = async (subscriptionId?: string) => {
+    if (!subscriptionId || !user) return;
+
+    let options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_LIVE_KEY,
+      subscription_id: subscriptionId,
+      name: 'AI Assistant App',
+      description: 'AI Assistant App Subscription',
+      image: '/logo.svg',
+      handler: function (response: any) {
+        if (!user._id || !response?.razorpay_payment_id) return;
+
+        console.log(response);
+        updateUserTokens({
+          userId: user._id,
+          credits: user.credits + PRO_PLAN_CREDITS,
+          orderId: response.razorpay_payment_id,
+        });
+      },
+      prefill: {
+        name: user.name,
+        email: user.email,
+      },
+      notes: {},
+      theme: {
+        color: '#000000',
+      },
+    };
+
+    // @ts-ignore
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+  };
 
   return (
     <Dialog open={openUserProfile} onOpenChange={setOpenUserProfile}>
@@ -87,7 +161,11 @@ function UserProfile({
                   </p>
                 </div>
                 <hr className="my-3" />
-                <Button className="w-full" disabled={isLoading}>
+                <Button
+                  className="w-full"
+                  disabled={isLoading}
+                  onClick={createSubscription}
+                >
                   {isLoading ? (
                     <Loader2Icon className="animate-spin" />
                   ) : (
@@ -97,7 +175,11 @@ function UserProfile({
                 </Button>
               </div>
             ) : (
-              <Button className="mt-4 w-full" variant="secondary">
+              <Button
+                className="mt-4 w-full"
+                variant="secondary"
+                onClick={cancelSubscription}
+              >
                 Cancel Subscription
               </Button>
             )}
