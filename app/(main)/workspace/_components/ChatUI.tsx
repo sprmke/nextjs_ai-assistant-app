@@ -50,13 +50,15 @@ function ChatUI() {
   }, [assistant?.id]);
 
   const onSendMessage = async () => {
+    if (!assistant) return;
+
     setIsLoading(true);
     setMessages((prevMessages) => [
       ...prevMessages,
       { role: 'user', content: message },
     ]);
 
-    const model = aiModelOptions.find(({ id }) => id === assistant?.aiModelId);
+    const model = aiModelOptions.find(({ id }) => id === assistant.aiModelId);
 
     // Clear the input field immediately after sending the message
     setMessage('');

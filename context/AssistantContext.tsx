@@ -4,7 +4,7 @@ import { AiAssistant } from '@/app/(main)/types';
 
 type AssistantContextType = {
   assistant: AiAssistant | null;
-  setAssistant: (assistant: AiAssistant) => void;
+  setAssistant: (assistant: AiAssistant | null) => void;
 };
 
 export const AssistantContext = createContext<AssistantContextType>({

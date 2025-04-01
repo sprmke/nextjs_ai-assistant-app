@@ -48,6 +48,7 @@ function AssistantList() {
   }, [user, assistant]);
 
   const getUserAssistants = async () => {
+    if (!user) return;
     setIsLoading(true);
     setAssistants([]);
 

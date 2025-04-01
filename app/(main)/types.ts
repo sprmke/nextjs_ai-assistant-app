@@ -1,6 +1,7 @@
 import { Id } from '@/convex/_generated/dataModel';
 
 export type AiAssistant = {
+  _id: Id<'userAiAssistants'>;
   id: string;
   name: string;
   title: string;

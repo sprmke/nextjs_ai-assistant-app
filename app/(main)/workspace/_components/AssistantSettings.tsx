@@ -40,19 +40,17 @@ function AssistantSettings() {
   const [loading, setLoading] = useState(false);
 
   const onHandleInputChange = (field: keyof AiAssistant, value: string) => {
-    setAssistant((prevAssistant: AiAssistant) => ({
-      ...prevAssistant,
-      [field]: value,
-    }));
+    setAssistant({ ...assistant, [field]: value } as AiAssistant);
   };
 
   const OnSave = async () => {
+    if (!assistant) return;
     setLoading(true);
 
     await updateAssistant({
-      id: assistant?._id,
-      aiModelId: assistant?.aiModelId,
-      userInstruction: assistant?.userInstruction,
+      id: assistant._id,
+      aiModelId: assistant.aiModelId,
+      userInstruction: assistant.userInstruction ?? '',
     });
 
     toast('AI assistant settings updated!');
@@ -60,10 +58,12 @@ function AssistantSettings() {
   };
 
   const OnDelete = async () => {
+    if (!assistant) return;
+
     setLoading(true);
 
     await deleteAssistant({
-      id: assistant?._id,
+      id: assistant._id,
     });
 
     setAssistant(null);
@@ -73,7 +73,7 @@ function AssistantSettings() {
   return (
     assistant && (
       <div className="p-5 bg-secondary border-l-[1px] h-screen">
-        <h2 className="font-bold text-xl">Settings</h2>
+        <h2 className="font-bold text-xl">Assistant Settings</h2>
         <BlurFade delay={0.25}>
           <div className="mt-4 flex gap-3">
             <Image

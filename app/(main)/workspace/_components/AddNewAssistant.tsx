@@ -46,7 +46,7 @@ const DEFAULT_ASSISTANT = {
   sampleQuestions: [],
   userInstruction: '',
   aiModelId: 'google/gemini-2.0-flash',
-};
+} as unknown as AiAssistant;
 
 function AddNewAssistant({
   children,
@@ -63,8 +63,13 @@ function AddNewAssistant({
   const [selectedAssistant, setSelectedAssistant] =
     useState<AiAssistant>(DEFAULT_ASSISTANT);
 
-  const { name, title, userInstruction, aiModelId, image } =
-    selectedAssistant ?? {};
+  const {
+    name,
+    title,
+    userInstruction,
+    aiModelId = 'google/gemini-2.0-flash',
+    image,
+  } = selectedAssistant ?? {};
 
   const onHandleInputChange = (key: string, value: string) => {
     setSelectedAssistant((prevAssistantInfo) => ({
@@ -74,7 +79,7 @@ function AddNewAssistant({
   };
 
   const addAssistant = async () => {
-    if (!name || !title || !userInstruction) {
+    if (!user || !name || !title || !userInstruction) {
       return;
     }
 
@@ -84,7 +89,8 @@ function AddNewAssistant({
         {
           ...selectedAssistant,
           id: crypto.randomUUID(),
-          userId: user?._id,
+          userId: user._id,
+          aiModelId: aiModelId ?? 'google/gemini-2.0-flash',
         },
       ],
     });
@@ -117,7 +123,11 @@ function AddNewAssistant({
                     <div
                       className="p-2 hover:bg-secondary flex gap-2 items-center rounded-lg cursor-pointer"
                       key={index}
-                      onClick={() => setSelectedAssistant(assistant)}
+                      onClick={() =>
+                        setSelectedAssistant(
+                          assistant as unknown as AiAssistant
+                        )
+                      }
                     >
                       <Image
                         src={assistant.image}
