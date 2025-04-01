@@ -19,7 +19,6 @@ import ChatEmptyUI from '@/app/(main)/workspace/_components/ChatEmptyUI';
 import ChatMessage from '@/app/(main)/workspace/_components/ChatMessage';
 
 import { aiModelOptions } from '@/services/AiModelOptions';
-import { User } from '@/app/(main)/types';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -37,6 +36,8 @@ function ChatUI() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const isChatDisabled = isLoading || (user?.credits ?? 0) <= 0;
 
   useEffect(() => {
     // Scroll to the bottom of the chat when new messages are added
@@ -127,12 +128,12 @@ function ChatUI() {
       <div className="flex justify-between p-5 gap-2">
         <Input
           value={message}
-          disabled={isLoading}
+          disabled={isChatDisabled}
           placeholder="Type your message here..."
           onChange={(e) => setMessage(e.target.value)}
           onKeyUp={(e) => e.key === 'Enter' && onSendMessage()}
         />
-        <Button disabled={isLoading} onClick={onSendMessage}>
+        <Button disabled={isChatDisabled} onClick={onSendMessage}>
           <Send />
         </Button>
       </div>

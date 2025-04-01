@@ -43,7 +43,7 @@ function SignIn() {
       setUser(newUser as User);
 
       // Redirect to home page
-      router.replace('/ai-assistants');
+      router.replace('/assistants');
     },
     onError: (errorResponse) => console.error(errorResponse),
   });
