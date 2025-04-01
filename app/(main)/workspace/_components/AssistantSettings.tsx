@@ -22,7 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
-import AiModelOptions from '@/services/AiModelOptions';
+import { aiModelOptions } from '@/services/AiModelOptions';
 
 import { AssistantContext } from '@/context/AssistantContext';
 
@@ -102,17 +102,17 @@ function AssistantSettings() {
                 <SelectValue placeholder="Select Model" />
               </SelectTrigger>
               <SelectContent>
-                {AiModelOptions.map((model, index) => (
-                  <SelectItem value={model.name} key={index}>
+                {aiModelOptions.map(({ id, logo, name }, index) => (
+                  <SelectItem value={id} key={index}>
                     <div className="flex gap-2 items-center m-1">
                       <Image
-                        src={model.logo}
-                        alt={model.name}
+                        src={logo}
+                        alt={name}
                         width={20}
                         height={20}
                         className="rounded-md"
                       />
-                      <h2>{model.name}</h2>
+                      <h2>{name}</h2>
                     </div>
                   </SelectItem>
                 ))}
@@ -122,9 +122,9 @@ function AssistantSettings() {
         </BlurFade>
         <BlurFade delay={0.25 * 3}>
           <div className="mt-4">
-            <h2 className="text-gray-500">Instruction:</h2>
+            <h2 className="text-gray-500">Instructions:</h2>
             <Textarea
-              placeholder="Add Instruction"
+              placeholder="Add Instructions"
               className="h-[180px] bg-white"
               value={assistant?.userInstruction}
               onChange={(e) =>
@@ -133,7 +133,7 @@ function AssistantSettings() {
             />
           </div>
         </BlurFade>
-        <div className="absolute bottom-10 right-5 flex  gap-5">
+        <div className="absolute bottom-10 right-5 flex gap-5">
           <AssistantConfirmationAlert OnDelete={OnDelete}>
             <Button disabled={loading} variant="ghost">
               <Trash /> Delete
