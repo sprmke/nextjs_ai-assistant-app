@@ -6,9 +6,11 @@ import axios from 'axios';
 
 import { Send } from 'lucide-react';
 
-import AiModelOptions from '@/services/AiModelOptions';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 import { AssistantContext } from '@/context/AssistantContext';
+import { AuthContext } from '@/context/AuthContext';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,13 +18,19 @@ import { Input } from '@/components/ui/input';
 import ChatEmptyUI from '@/app/(main)/workspace/_components/ChatEmptyUI';
 import ChatMessage from '@/app/(main)/workspace/_components/ChatMessage';
 
+import { aiModelOptions } from '@/services/AiModelOptions';
+import { User } from '@/app/(main)/types';
+
 type Message = {
   role: 'user' | 'assistant';
   content: string;
 };
 
 function ChatUI() {
-  const { assistant, setAssistant } = useContext(AssistantContext);
+  const { assistant } = useContext(AssistantContext);
+  const { user, setUser } = useContext(AuthContext);
+
+  const updateUserTokens = useMutation(api.users.UpdateUserTokens);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -48,9 +56,7 @@ function ChatUI() {
       { role: 'user', content: message },
     ]);
 
-    const model = AiModelOptions.find(
-      ({ name }) => name === assistant.aiModelId
-    );
+    const model = aiModelOptions.find(({ id }) => id === assistant?.aiModelId);
 
     // Clear the input field immediately after sending the message
     setMessage('');
@@ -60,10 +66,30 @@ function ChatUI() {
       userMessage: message,
       prevAssistantMessage: messages[messages?.length - 1]?.content,
     });
-    console.log(result.data);
 
-    setMessages((prevMessages) => [...prevMessages, { ...result.data }]);
     setIsLoading(false);
+    setMessages((prevMessages) => [...prevMessages, { ...result.data }]);
+    updateUserCredits(result.data.content);
+  };
+
+  const updateUserCredits = async (contentMessage: string = '') => {
+    if (!user) return;
+
+    const tokenCount = contentMessage
+      ? contentMessage.trim().split(/\s+/).length
+      : 0;
+
+    const credits = user?.credits - tokenCount;
+
+    await updateUserTokens({
+      userId: user?._id,
+      credits,
+    });
+
+    setUser({
+      ...user,
+      credits,
+    });
   };
 
   return (
@@ -81,7 +107,7 @@ function ChatUI() {
               role={role}
               content={content}
               assistantImage={
-                role === 'assistant' ? assistant.image : undefined
+                role === 'assistant' ? assistant?.image : undefined
               }
             />
           ))}
@@ -89,7 +115,7 @@ function ChatUI() {
             <ChatMessage
               role="assistant"
               content="Loading..."
-              assistantImage={assistant.image}
+              assistantImage={assistant?.image}
               isLoading={true}
             />
           )}
