@@ -45,3 +45,17 @@ export const GetUser = query({
     return user;
   },
 });
+
+export const UpdateUserTokens = mutation({
+  args: {
+    userId: v.id('users'),
+    credits: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.patch(args.userId, {
+      credits: args.credits,
+    });
+
+    return result;
+  },
+});
