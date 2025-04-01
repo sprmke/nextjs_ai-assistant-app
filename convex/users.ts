@@ -15,8 +15,6 @@ export const CreateUser = mutation({
       .collect();
     const [user] = result ?? [];
 
-    console.log('user::', user);
-
     if (!user) {
       // If not, then add user
       const userData = {
@@ -26,7 +24,6 @@ export const CreateUser = mutation({
         credits: 5000,
       };
       await ctx.db.insert('users', userData);
-      console.log('userData::', userData);
       return userData;
     }
 

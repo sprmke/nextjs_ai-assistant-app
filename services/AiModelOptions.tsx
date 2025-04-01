@@ -1,4 +1,4 @@
-export default [
+export const aiModelOptions = [
   {
     name: 'Google: Gemini 2.0 Flash',
     id: 'google/gemini-2.0-flash',

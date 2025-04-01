@@ -2,7 +2,7 @@ import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
 
 export const aiAssistant = {
-  id: v.number(),
+  id: v.string(),
   name: v.string(),
   title: v.string(),
   image: v.string(),

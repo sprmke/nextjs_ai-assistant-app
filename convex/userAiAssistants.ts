@@ -17,7 +17,7 @@ export const getAllUserAssistants = query({
   },
 });
 
-export const addSelectedAssistants = mutation({
+export const addAssistants = mutation({
   args: {
     aiAssistants: v.array(v.object(aiAssistant)),
   },
