@@ -13,7 +13,7 @@ import { api } from '@/convex/_generated/api';
 import { AuthContext } from '@/context/AuthContext';
 import { AssistantContext } from '@/context/AssistantContext';
 
-import type { AiAssistant } from '@/app/(main)/types';
+import type { AiAssistant, User } from '@/app/(main)/types';
 
 function Provider({
   children,
@@ -22,7 +22,7 @@ function Provider({
 }>) {
   const router = useRouter();
   const convex = useConvex();
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const [assistant, setAssistant] = useState<AiAssistant | null>(null);
 
   useEffect(() => {

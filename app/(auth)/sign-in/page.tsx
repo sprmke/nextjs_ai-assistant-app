@@ -1,17 +1,21 @@
 'use client';
 
 import React, { useContext } from 'react';
+
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import { useGoogleLogin } from '@react-oauth/google';
 
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-import { useGoogleLogin } from '@react-oauth/google';
 
+import { AuthContext } from '@/context/AuthContext';
 import { GetAuthUserData } from '@/services/GlobalApi';
 
 import { Button } from '@/components/ui/button';
-import { AuthContext } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+
+import { User } from '@/app/(main)/types';
 
 function SignIn() {
   const CreateUser = useMutation(api.users.CreateUser);
@@ -36,7 +40,7 @@ function SignIn() {
         picture,
       });
 
-      setUser(newUser);
+      setUser(newUser as User);
 
       // Redirect to home page
       router.replace('/ai-assistants');
