@@ -13,7 +13,7 @@ export default [
   },
   {
     name: 'OpenAI: GPT-3.5 Turbo',
-    id: 'openai/gpt-4o-mini',
+    id: 'openai/gpt-3.5-turbo',
     // model: 'openai/gpt-3.5-turbo',//OpenRouter.ai
     logo: '/chatgpt.png',
   },
