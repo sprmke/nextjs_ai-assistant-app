@@ -13,7 +13,7 @@ import { api } from '@/convex/_generated/api';
 import { AuthContext } from '@/context/AuthContext';
 import { AssistantContext } from '@/context/AssistantContext';
 
-import type { AiAssistant, User } from '@/app/(main)/types';
+import type { AiAssistant } from '@/app/(main)/types';
 
 function Provider({
   children,

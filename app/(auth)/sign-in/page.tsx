@@ -19,7 +19,7 @@ import { User } from '@/app/(main)/types';
 
 function SignIn() {
   const CreateUser = useMutation(api.users.CreateUser);
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
   const router = useRouter();
 

@@ -82,6 +82,7 @@ function UserProfile({
       name: 'AI Assistant App',
       description: 'AI Assistant App Subscription',
       image: '/logo.svg',
+      // @ts-ignore
       handler: function (response: any) {
         if (!user._id || !response?.razorpay_payment_id) return;
 

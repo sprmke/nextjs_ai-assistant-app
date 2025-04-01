@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-import { LogOut, UserCircle2 } from 'lucide-react';
+import { Loader2, LogOut, UserCircle2 } from 'lucide-react';
 
 import { BlurFade } from '@/components/magicui/blur-fade';
 
@@ -77,30 +77,36 @@ function AssistantList() {
       <Input className="bg-white mt-3" placeholder="Search assistant" />
 
       <div className="mt-5 overflow-auto h-[64%]">
-        {assistants.map((_assistant, index) => (
-          <BlurFade key={index} delay={0.25 + index * 0.05} inView>
-            <div
-              className={`p-2 flex gap-3 items-center hover:bg-gray-200 hover:dark:bg-slate-700 rounded-xl cursor-pointer mt-2 ${_assistant.id == assistant?.id && 'bg-gray-200'}`}
-              onClick={() => {
-                setAssistant(_assistant);
-              }}
-            >
-              <Image
-                src={_assistant.image}
-                alt={_assistant.name}
-                width={60}
-                height={60}
-                className="rounded-xl w-[60px] h-[60px] object-cover"
-              />
-              <div>
-                <h2 className="font-bold">{_assistant.name}</h2>
-                <h2 className="text-gray-600 text-sm dark:text-gray-300">
-                  {_assistant.title}
-                </h2>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <Loader2 className="animate-spin opacity-25" />
+          </div>
+        ) : (
+          assistants.map((_assistant, index) => (
+            <BlurFade key={index} delay={0.25 + index * 0.05} inView>
+              <div
+                className={`p-2 flex gap-3 items-center hover:bg-gray-200 hover:dark:bg-slate-700 rounded-xl cursor-pointer mt-2 ${_assistant.id == assistant?.id && 'bg-gray-200'}`}
+                onClick={() => {
+                  setAssistant(_assistant);
+                }}
+              >
+                <Image
+                  src={_assistant.image}
+                  alt={_assistant.name}
+                  width={60}
+                  height={60}
+                  className="rounded-xl w-[60px] h-[60px] object-cover"
+                />
+                <div>
+                  <h2 className="font-bold">{_assistant.name}</h2>
+                  <h2 className="text-gray-600 text-sm dark:text-gray-300">
+                    {_assistant.title}
+                  </h2>
+                </div>
               </div>
-            </div>
-          </BlurFade>
-        ))}
+            </BlurFade>
+          ))
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

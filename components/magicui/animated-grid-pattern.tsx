@@ -17,11 +17,10 @@ export interface AnimatedGridPatternProps
   height?: number;
   x?: number;
   y?: number;
-  strokeDasharray?: any;
+  strokeDasharray?: number;
   numSquares?: number;
   maxOpacity?: number;
   duration?: number;
-  repeatDelay?: number;
 }
 
 export function AnimatedGridPattern({
@@ -34,7 +33,6 @@ export function AnimatedGridPattern({
   className,
   maxOpacity = 0.5,
   duration = 4,
-  repeatDelay = 0.5,
   ...props
 }: AnimatedGridPatternProps) {
   const id = useId();
