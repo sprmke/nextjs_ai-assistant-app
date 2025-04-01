@@ -1,6 +1,6 @@
 export const aiAssistantsList = [
   {
-    id: 1,
+    id: 'template-fitness-coach',
     name: 'Jack',
     title: 'Fitness Coach 💪',
     image: '/fitness-coach.png',
@@ -14,7 +14,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 2,
+    id: 'template-grammar-fixer',
     name: 'Emma',
     title: 'Grammar Fixer ✍️',
     image: '/grammer-fixer.jpg',
@@ -28,7 +28,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 3,
+    id: 'template-email-writer',
     name: 'Olivia',
     title: 'Email Writer & Reply Assistant 📩',
     image: '/email-writer.avif',
@@ -42,7 +42,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 4,
+    id: 'template-youtube-writer',
     name: 'Liam',
     title: 'YouTube Script Writer 🎬',
     image: '/youtube-script-writer.jpg',
@@ -56,7 +56,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 5,
+    id: 'template-code-writer',
     name: 'Harry',
     title: 'Code Writer 💻',
     image: '/code-writer.jpg',
@@ -70,7 +70,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 6,
+    id: 'template-bug-finder',
     name: 'James',
     title: 'Bug Finder 🐛',
     image: '/bug-fixer.avif',
@@ -84,7 +84,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 7,
+    id: 'template-finance-assistant',
     name: 'William',
     title: 'Finance Assistant 💰',
     image: '/finanace.avif',
@@ -98,7 +98,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 8,
+    id: 'template-virtual-girlfriend',
     name: 'Ava',
     title: 'Virtual Girlfriend 💖',
     image: '/virtual-girl.jpg',
@@ -112,7 +112,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 9,
+    id: 'template-virtual-boyfriend',
     name: 'Ethan',
     title: 'Virtual Boyfriend 💙',
     image: '/ethan.avif',
@@ -126,7 +126,7 @@ export const aiAssistantsList = [
     ],
   },
   {
-    id: 10,
+    id: 'template-personal-tutor',
     name: 'Mia',
     title: 'Personal Tutor 📚',
     image: '/personal-tutor.jpg',
