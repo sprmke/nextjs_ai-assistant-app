@@ -8,7 +8,7 @@ import { AssistantContext } from '@/context/AssistantContext';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
 function ChatEmptyUI() {
-  const { assistant, setAssistant } = useContext(AssistantContext);
+  const { assistant } = useContext(AssistantContext);
 
   return (
     <div className="flex flex-col items-center justify-center flex-1">

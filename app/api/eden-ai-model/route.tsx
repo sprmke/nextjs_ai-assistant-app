@@ -29,16 +29,12 @@ export async function POST(req: NextRequest) {
     messages: messages,
   });
 
-  console.log('body::', body);
-
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers,
       body,
     });
-
-    console.log(response);
 
     if (!response.ok) {
       return NextResponse.json(
@@ -48,8 +44,6 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await response.json();
-
-    console.log('result::', result);
 
     if (!result.choices?.length) {
       return NextResponse.json(

@@ -1,5 +1,5 @@
 export type AiAssistant = {
-  id: number;
+  id: string;
   name: string;
   title: string;
   image: string;
@@ -7,7 +7,7 @@ export type AiAssistant = {
   userInstruction: string;
   sampleQuestions: string[];
   aiModelId?: string;
-  userId: string;
+  userId?: string;
 };
 
 export type AiAssistants = AiAssistant[];

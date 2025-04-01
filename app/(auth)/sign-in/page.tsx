@@ -21,8 +21,6 @@ function SignIn() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
-
       if (typeof window !== 'undefined') {
         localStorage.setItem('user_token', tokenResponse.access_token);
       }
@@ -43,7 +41,7 @@ function SignIn() {
       // Redirect to home page
       router.replace('/ai-assistants');
     },
-    onError: (errorResponse) => console.log(errorResponse),
+    onError: (errorResponse) => console.error(errorResponse),
   });
 
   return (
