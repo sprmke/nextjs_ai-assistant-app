@@ -38,6 +38,8 @@ function AIAssistants() {
   }, [user]);
 
   const getUserAssistants = async () => {
+    if (!user) return;
+
     setIsLoading(true);
     const userAssistants = await convex.query(
       api.userAiAssistants.getAllUserAssistants,
@@ -71,11 +73,12 @@ function AIAssistants() {
   };
 
   const saveSelectedAssistants = async () => {
+    if (!user) return;
     setIsLoading(true);
     await addAssistants({
       aiAssistants: selectedAssistants.map((aiAssistant) => ({
         ...aiAssistant,
-        userId: user?._id,
+        userId: user._id,
         aiModelId: 'google/gemini-2.0-flash',
       })),
     });
