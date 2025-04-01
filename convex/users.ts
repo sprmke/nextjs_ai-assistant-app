@@ -50,10 +50,12 @@ export const UpdateUserTokens = mutation({
   args: {
     userId: v.id('users'),
     credits: v.number(),
+    orderId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const result = await ctx.db.patch(args.userId, {
       credits: args.credits,
+      ...(args.orderId && { orderId: args.orderId }),
     });
 
     return result;
