@@ -55,9 +55,9 @@ function SignIn() {
         gap-5 border rounded-2xl p-10 shadow-md"
       >
         <Image src={'/logo.svg'} alt="App Logo" width={50} height={50} />
-        <h2 className="text-2xl">Sign In To AI Personal Assistant</h2>
+        <h2 className="text-2xl">Sign In to AI Personal Companion</h2>
 
-        <Button onClick={() => googleLogin()}>Sign in With Gmail</Button>
+        <Button onClick={() => googleLogin()}>Sign in with Google</Button>
       </div>
     </div>
   );
