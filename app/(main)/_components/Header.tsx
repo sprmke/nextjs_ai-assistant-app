@@ -8,7 +8,7 @@ function Header() {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="p-3 fixed shadow-sm w-full flex justify-between items-center px-14">
+    <div className="p-3 fixed top-0 shadow-sm w-full flex justify-between items-center px-14">
       <Image src={'/logo.svg'} alt="App Logo" width={40} height={40} />
 
       {user?.picture && (
