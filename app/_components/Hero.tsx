@@ -11,6 +11,7 @@ import { AuroraText } from '@/components/magicui/aurora-text';
 import HeroVideoDialog from '@/components/magicui/hero-video-dialog';
 import { AnimatedGridPattern } from '@/components/magicui/animated-grid-pattern';
 import { AnimatedGradientText } from '@/components/magicui/animated-gradient-text';
+import { RainbowButton } from '@/components/magicui/rainbow-button';
 
 function Hero() {
   return (
@@ -22,8 +23,7 @@ function Hero() {
           numSquares={30}
           maxOpacity={0.1}
           duration={3}
-          className="[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]
-                inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
+          className="[mask-image:radial-gradient(500px_circle_at_center,white,transparent)] inset-x-0 inset-y-[-30%] h-[200%] skew-y-12"
         />
 
         <div className="flex flex-col gap-7 items-center">
@@ -41,20 +41,17 @@ function Hero() {
             />
             🎉 <hr className="mx-2 h-4 w-px shrink-0 bg-neutral-500" />
             <AnimatedGradientText className="text-sm font-medium">
-              Introducing Personal AI Assistant
+              Introducing your personal and customizable AI companions
             </AnimatedGradientText>
-            <ChevronRight
-              className="ml-1 size-4 stroke-neutral-500 transition-transform
- duration-300 ease-in-out group-hover:translate-x-0.5"
-            />
+            <ChevronRight className="ml-1 size-4 stroke-neutral-500 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
           </div>
           <h1 className="text-4xl font-bold tracking-tighter md:text-5xl lg:text-7xl">
             Your Personal <AuroraText>AI Companion</AuroraText>
           </h1>
           <Link href={'/assistants'}>
-            <Button>Get Started</Button>
+            <RainbowButton>Let's get started</RainbowButton>
           </Link>
-          <div className="max-w-2xl">
+          <div className="max-w-2xl mt-16">
             <HeroVideoDialog
               className="block dark:hidden"
               animationStyle="from-center"
