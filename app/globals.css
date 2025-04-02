@@ -142,3 +142,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom checkbox styles */
+checkbox[data-state='checked'] {
+  background-color: var(--checkbox-checked-bg, hsl(var(--primary))) !important;
+}

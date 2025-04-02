@@ -91,17 +91,17 @@ function AIAssistants() {
       <Loader2Icon className="animate-spin" size={35} />
     </div>
   ) : (
-    <div className="px-10 mt-20 md:px-28 lg:px-36 xl:px-48">
+    <div className="px-10 mt-20 md:px-28 lg:px-36 xl:px-48 py-10">
       <div className="flex justify-between items-center">
         <div>
           <BlurFade delay={0.25} inView>
             <h2 className="text-3xl font-bold">
-              Welcome to the World of AI Assistants 🤖
+              Welcome to the World of AI Companions!
             </h2>
           </BlurFade>
           <BlurFade delay={0.25 * 2} inView>
             <p className="text-xl mt-2">
-              Choose your AI Campanion to Simplify Your Task 🚀
+              Choose your AI companion to simplify your tasks 🚀
             </p>
           </BlurFade>
         </div>
@@ -113,10 +113,7 @@ function AIAssistants() {
         </RainbowButton>
       </div>
 
-      <div
-        className="grid grid-cols-2 md:grid-cols-3 
-        lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-5"
-      >
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-10">
         {aiAssistantsList.map((assistant, index) => (
           <BlurFade key={index} delay={0.25 + index * 0.05} inView>
             <div
@@ -127,6 +124,8 @@ function AIAssistants() {
               <Checkbox
                 className="absolute m-2"
                 checked={isAssistantSelected(assistant as AiAssistant)}
+                variant="custom"
+                customColor="#ef4138"
               />
               <Image
                 src={assistant.image}
