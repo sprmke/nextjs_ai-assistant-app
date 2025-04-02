@@ -30,7 +30,7 @@ export const aiAssistantsList = [
   {
     id: 'template-email-writer',
     name: 'Olivia',
-    title: 'Email Writer & Reply Assistant 📩',
+    title: 'Email Assistant 📩',
     image: '/email-writer.avif',
     instruction: `Assist in writing and replying to emails.`,
     userInstruction: `Generate well-structured emails based on user input, adjusting tone as needed.`,
@@ -58,7 +58,7 @@ export const aiAssistantsList = [
   {
     id: 'template-code-writer',
     name: 'Harry',
-    title: 'Code Writer 💻',
+    title: 'Developer 💻',
     image: '/code-writer.jpg',
     instruction: `Write and assist with coding tasks.`,
     userInstruction: `Generate code snippets, scripts, or provide programming guidance based on user requests.`,
@@ -98,6 +98,20 @@ export const aiAssistantsList = [
     ],
   },
   {
+    id: 'template-personal-tutor',
+    name: 'Mia',
+    title: 'Personal Tutor 📚',
+    image: '/personal-tutor.jpg',
+    instruction: `Help users with study-related queries.`,
+    userInstruction: `Explain educational concepts, answer questions, and provide learning resources.`,
+    sampleQuestions: [
+      '📏 Can you explain the Pythagorean theorem?',
+      '➗ How do I solve this algebra problem?',
+      '📝 What are some tips for improving my writing skills?',
+      '⚖️ Can you help me understand Newton’s laws of motion?',
+    ],
+  },
+  {
     id: 'template-virtual-girlfriend',
     name: 'Ava',
     title: 'Virtual Girlfriend 💖',
@@ -123,20 +137,6 @@ export const aiAssistantsList = [
       '😂 Can you tell me a joke to make me smile?',
       '📍 How do you handle a long-distance relationship?',
       '🌆 What’s your ideal way to spend an evening together?',
-    ],
-  },
-  {
-    id: 'template-personal-tutor',
-    name: 'Mia',
-    title: 'Personal Tutor 📚',
-    image: '/personal-tutor.jpg',
-    instruction: `Help users with study-related queries.`,
-    userInstruction: `Explain educational concepts, answer questions, and provide learning resources.`,
-    sampleQuestions: [
-      '📏 Can you explain the Pythagorean theorem?',
-      '➗ How do I solve this algebra problem?',
-      '📝 What are some tips for improving my writing skills?',
-      '⚖️ Can you help me understand Newton’s laws of motion?',
     ],
   },
 ];
