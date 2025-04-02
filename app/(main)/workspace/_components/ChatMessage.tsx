@@ -1,5 +1,8 @@
-import { Loader2Icon } from 'lucide-react';
 import Image from 'next/image';
+
+import { Loader2Icon } from 'lucide-react';
+
+import Markdown from 'react-markdown';
 
 type ChatMessageProps = {
   role: 'user' | 'assistant';
@@ -29,12 +32,12 @@ function ChatMessage({
           />
         )}
         <div
-          className={`flex items-center gap-2 p-3 text-black rounded-lg ${
+          className={`flex items-start justify-start gap-2 p-3 text-black rounded-lg ${
             role === 'user' ? 'bg-gray-200' : 'bg-gray-50'
-          }`}
+          } ${isLoading ? 'flex-row' : 'flex-col'}`}
         >
           {isLoading && <Loader2Icon className="w-4 h-4 animate-spin" />}
-          <p>{content}</p>
+          <Markdown>{content}</Markdown>
         </div>
       </div>
     </div>
