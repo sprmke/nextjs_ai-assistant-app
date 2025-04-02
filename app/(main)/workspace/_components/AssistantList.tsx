@@ -68,10 +68,10 @@ function AssistantList() {
 
   return (
     <div className="p-5 bg-secondary border-r-[1px] h-screen relative">
-      <h2 className="font-bold text-lg">Your Personal AI Assistants</h2>
+      <h2 className="font-bold text-lg">Your Personal AI Companions</h2>
 
       <AddNewAssistant onAddAssistant={getUserAssistants}>
-        <Button className="w-full mt-3">+ Add New Assistant</Button>
+        <Button className="w-full mt-3">+ Add New Companion</Button>
       </AddNewAssistant>
 
       <Input className="bg-white mt-3" placeholder="Search assistant" />

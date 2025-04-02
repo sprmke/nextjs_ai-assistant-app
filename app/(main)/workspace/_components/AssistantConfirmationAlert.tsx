@@ -23,11 +23,11 @@ function ConfirmationAlert({ children, OnDelete }: ConfirmationAlertProps) {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you really want to Delete this Assistant?
+            Are you really want to delete this companion?
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            companion custom settings and conversation history.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
