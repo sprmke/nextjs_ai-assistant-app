@@ -56,7 +56,7 @@ function Hero() {
               className="block dark:hidden"
               animationStyle="from-center"
               videoSrc="https://www.youtube.com/embed/yPYZpwSpKmA?si=eleRgiXz83cbgYRe"
-              thumbnailSrc="/thumbnail.png"
+              thumbnailSrc="/hero-thumbnail.png"
               thumbnailAlt="Hero Video"
             />
           </div>
