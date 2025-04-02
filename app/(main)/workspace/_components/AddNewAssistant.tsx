@@ -106,39 +106,42 @@ function AddNewAssistant({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="mb-2">Add new assistant</DialogTitle>
+          <DialogTitle className="mb-2">Add new companion</DialogTitle>
           <DialogDescription asChild>
             <div className="grid grid-cols-3 gap-5 mt-5">
-              <div className="flex flex-col gap-2 border-r pr-5">
+              <div className="flex flex-col gap-6 border-r pr-5">
                 <Button
                   variant="default"
                   size="sm"
                   className="w-full"
                   onClick={() => setSelectedAssistant(DEFAULT_ASSISTANT)}
                 >
-                  + Create new assistant
+                  + Create custom companion
                 </Button>
-                <div className="flex flex-col max-h-[80vh] overflow-auto scrollbar-hide">
-                  {aiAssistantsList.map((assistant, index) => (
-                    <div
-                      className="p-2 hover:bg-secondary flex gap-2 items-center rounded-lg cursor-pointer"
-                      key={index}
-                      onClick={() =>
-                        setSelectedAssistant(
-                          assistant as unknown as AiAssistant
-                        )
-                      }
-                    >
-                      <Image
-                        src={assistant.image}
-                        width={40}
-                        height={40}
-                        alt={assistant.name}
-                        className="w-[40px] h-[40px] object-cover rounded-lg"
-                      />
-                      <p className="text-xs">{assistant.title}</p>
-                    </div>
-                  ))}
+                <div className="flex flex-col gap-2">
+                  <p>Suggested companions:</p>
+                  <div className="flex flex-col max-h-[75vh] overflow-auto scrollbar-hide">
+                    {aiAssistantsList.map((assistant, index) => (
+                      <div
+                        className="p-2 hover:bg-secondary flex gap-2 items-center rounded-lg cursor-pointer"
+                        key={index}
+                        onClick={() =>
+                          setSelectedAssistant(
+                            assistant as unknown as AiAssistant
+                          )
+                        }
+                      >
+                        <Image
+                          src={assistant.image}
+                          width={40}
+                          height={40}
+                          alt={assistant.name}
+                          className="w-[40px] h-[40px] object-cover rounded-lg"
+                        />
+                        <p className="text-xs">{assistant.title}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="col-span-2 flex flex-col gap-5">
@@ -158,7 +161,7 @@ function AddNewAssistant({
                   </AssistantAvatar>
                   <div className="flex flex-col gap-3 w-full">
                     <Input
-                      placeholder="Name of Assistant"
+                      placeholder="Name of Companion"
                       className="w-full"
                       value={selectedAssistant?.name}
                       onChange={(event) =>
@@ -166,7 +169,7 @@ function AddNewAssistant({
                       }
                     />
                     <Input
-                      placeholder="Title of Assistant"
+                      placeholder="Title of Companion"
                       value={selectedAssistant?.title}
                       onChange={(event) =>
                         onHandleInputChange('title', event.target.value)
