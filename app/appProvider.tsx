@@ -26,7 +26,7 @@ function Provider({
             enableSystem
             disableTransitionOnChange
           >
-            <div>{children}</div>
+            {children}
           </NextThemesProvider>
         </AuthContext.Provider>
       </ConvexProvider>
