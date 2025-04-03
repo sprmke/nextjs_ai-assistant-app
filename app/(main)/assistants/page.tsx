@@ -19,6 +19,8 @@ import { AuthContext } from '@/context/AuthContext';
 import { aiAssistantsList } from '@/services/AiAssistantsList';
 import { AiAssistant, AiAssistants } from '@/app/(main)/types';
 
+import Hero from '../_components/Hero';
+
 function AIAssistants() {
   const router = useRouter();
   const convex = useConvex();
@@ -91,7 +93,7 @@ function AIAssistants() {
       <Loader2Icon className="animate-spin" size={35} />
     </div>
   ) : (
-    <div className="px-10 mt-20 md:px-28 lg:px-36 xl:px-48 py-10">
+    <div className="px-10 mt-[64px] md:px-28 lg:px-36 xl:px-48 py-10">
       <div className="flex justify-between items-center">
         <div>
           <BlurFade delay={0.25} inView>
