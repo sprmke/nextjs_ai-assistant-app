@@ -11,7 +11,7 @@ function ChatEmptyUI() {
   const { assistant } = useContext(AssistantContext);
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1">
+    <div className="flex flex-col items-center justify-center flex-1 max-h-[calc(100vh-76px-64px)] overflow-y-auto scrollbar-hide">
       <SparklesText
         className="text-4xl text-center"
         text="How can I assist you?"
