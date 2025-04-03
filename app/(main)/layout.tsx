@@ -1,5 +1,5 @@
 import React from 'react';
-import Provider from '@/app/(main)/mainProvider';
+import MainProvider from '@/app/(main)/mainProvider';
 
 function WorkspaceLayout({
   children,
@@ -8,7 +8,7 @@ function WorkspaceLayout({
 }>) {
   return (
     <div>
-      <Provider>{children}</Provider>
+      <MainProvider>{children}</MainProvider>
     </div>
   );
 }
