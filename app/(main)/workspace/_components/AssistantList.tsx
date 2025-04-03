@@ -67,16 +67,14 @@ function AssistantList() {
   };
 
   return (
-    <div className="p-5 bg-secondary border-r-[1px] h-screen relative">
-      <h2 className="font-bold text-lg">Your Personal AI Companions</h2>
-
+    <div className="flex flex-col p-5 bg-secondary border-r-[1px] h-[calc(100vh-64px)]">
       <AddNewAssistant onAddAssistant={getUserAssistants}>
-        <Button className="w-full mt-3">+ Add New Companion</Button>
+        <Button className="w-full">+ Add New Companion</Button>
       </AddNewAssistant>
 
       <Input className="bg-white mt-3" placeholder="Search assistant" />
 
-      <div className="mt-5 overflow-auto h-[64%]">
+      <div className="my-3 overflow-y-auto scrollbar-hide flex-1">
         {isLoading ? (
           <div className="flex justify-center items-center h-full">
             <Loader2 className="animate-spin opacity-25" />
@@ -107,45 +105,45 @@ function AssistantList() {
             </BlurFade>
           ))
         )}
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="absolute bottom-10 flex gap-3 items-center hover:bg-gray-200 w-[87%] p-2 rounded-xl cursor-pointer bg-secondary">
-              {user && (
-                <Image
-                  src={user?.picture}
-                  alt="user"
-                  width={35}
-                  height={35}
-                  className="rounded-full"
-                />
-              )}
-              <div>
-                <h2 className="font-bold">{user?.name}</h2>
-                <h2 className="text-gray-400 text-sm">
-                  {user?.orderId ? 'Pro Plan' : 'Free Plan'}
-                </h2>
-              </div>
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[200px]">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setOpenUserProfile(true)}>
-              <UserCircle2 />
-              Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <LogOut />
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <UserProfile
-          openUserProfile={openUserProfile}
-          setOpenUserProfile={setOpenUserProfile}
-        />
       </div>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <div className="flex gap-3 items-center hover:bg-gray-200 w-[87%] p-2 rounded-xl cursor-pointer bg-secondary">
+            {user && (
+              <Image
+                src={user?.picture}
+                alt="user"
+                width={35}
+                height={35}
+                className="rounded-full"
+              />
+            )}
+            <div>
+              <h2 className="font-bold">{user?.name}</h2>
+              <h2 className="text-gray-400 text-sm">
+                {user?.orderId ? 'Pro Plan' : 'Free Plan'}
+              </h2>
+            </div>
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-[200px]" align="start">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setOpenUserProfile(true)}>
+            <UserCircle2 />
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <LogOut />
+            Logout
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <UserProfile
+        openUserProfile={openUserProfile}
+        setOpenUserProfile={setOpenUserProfile}
+      />
     </div>
   );
 }
