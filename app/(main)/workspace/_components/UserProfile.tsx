@@ -36,6 +36,8 @@ function UserProfile({
 }) {
   const { user } = useContext(AuthContext);
 
+  const userCredits = (user?.credits ?? 0) >= 0 ? (user?.credits ?? 0) : 0;
+
   const updateUserTokens = useMutation(api.users.UpdateUserTokens);
 
   const [userMaxToken, setUserMaxToken] = useState(0);
@@ -136,9 +138,9 @@ function UserProfile({
             <div className="flex flex-col gap-2">
               <p className="font-bold">Token Usage</p>
               <p>
-                {user?.credits ?? 0}/{userMaxToken}
+                {userCredits}/{userMaxToken}
               </p>
-              <Progress value={((user?.credits ?? 0) / userMaxToken) * 100} />
+              <Progress value={(userCredits / userMaxToken) * 100} />
             </div>
 
             <div className="flex justify-between">
