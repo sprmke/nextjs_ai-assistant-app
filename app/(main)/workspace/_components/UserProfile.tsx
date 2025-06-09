@@ -144,7 +144,7 @@ function UserProfile({
             </div>
 
             <div className="flex justify-between">
-              <p className="font-bold text-lg">Current Plan</p>
+              <p className="font-semibold text-lg">Current Plan</p>
               <span className="p-1 bg-gray-100 rounded-md px-2 font-normal">
                 {!user?.orderId ? 'Free Plan' : 'Pro Plan'}
               </span>
@@ -174,7 +174,7 @@ function UserProfile({
                   ) : (
                     <WalletCardsIcon />
                   )}
-                  Upgrade
+                  Upgrade Plan
                 </Button>
               </div>
             ) : (
