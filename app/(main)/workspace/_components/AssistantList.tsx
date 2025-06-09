@@ -109,7 +109,7 @@ function AssistantList() {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="flex gap-3 items-center hover:bg-gray-200 w-[87%] p-2 rounded-xl cursor-pointer bg-secondary">
+          <div className="flex gap-3 items-center hover:bg-gray-200 w-full p-2 rounded-xl cursor-pointer bg-secondary">
             {user && (
               <Image
                 src={user?.picture}
