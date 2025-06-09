@@ -31,16 +31,19 @@ function Header() {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          {user?.picture && (
-            <Image
-              src={user?.picture}
-              alt="App Logo"
-              width={40}
-              height={40}
-              className="rounded-full cursor-pointer"
-              onClick={() => setOpenUserProfile(true)}
-            />
-          )}
+          <div className="flex items-center gap-x-3 cursor-pointer">
+            <p className="hidden md:flex">{user?.name}</p>
+            {user?.picture && (
+              <Image
+                src={user?.picture}
+                alt="App Logo"
+                width={40}
+                height={40}
+                className="rounded-full"
+                onClick={() => setOpenUserProfile(true)}
+              />
+            )}
+          </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[200px]" align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
