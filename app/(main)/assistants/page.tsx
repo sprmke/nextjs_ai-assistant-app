@@ -98,7 +98,7 @@ function AIAssistants() {
         <div>
           <BlurFade delay={0.25} inView>
             <h2 className="text-3xl font-bold">
-              Welcome to the World of AI Companions!
+              Welcome to the space of AI Companions!
             </h2>
           </BlurFade>
           <BlurFade delay={0.25 * 2} inView>
