@@ -23,7 +23,7 @@ function ConfirmationAlert({ children, OnDelete }: ConfirmationAlertProps) {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you really want to delete this companion?
+            Do you really want to delete this companion?
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
