@@ -53,7 +53,7 @@ function AssistantSettings() {
       userInstruction: assistant.userInstruction ?? '',
     });
 
-    toast('AI assistant settings updated!');
+    toast(`Successfully updated ${assistant.name}'s companion settings`);
     setLoading(false);
   };
 
