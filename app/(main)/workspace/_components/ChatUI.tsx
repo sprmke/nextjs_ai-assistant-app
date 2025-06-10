@@ -102,7 +102,7 @@ function ChatUI() {
       ) : (
         <div
           ref={scrollRef}
-          className="p-6 flex flex-col flex-1 max-h-[calc(100vh-76px)] overflow-y-auto scrollbar-hide"
+          className="p-6 flex flex-col flex-1 max-h-[calc(100vh-76px-64px)] overflow-y-auto scrollbar-hide"
         >
           {messages.map(({ role, content }, index) => (
             <ChatMessage
