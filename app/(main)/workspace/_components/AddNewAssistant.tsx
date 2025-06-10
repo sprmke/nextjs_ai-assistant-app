@@ -97,7 +97,7 @@ function AddNewAssistant({
 
     setSelectedAssistant(DEFAULT_ASSISTANT);
     setIsLoading(false);
-    toast('New companion added successfully');
+    toast(`Successfully added ${name} as a new companion`);
     onAddAssistant();
   };
 
