@@ -116,25 +116,22 @@ function AddNewAssistant({
           <DialogTitle className="mb-2">Add New Companion</DialogTitle>
           <DialogDescription asChild>
             <div className="grid grid-cols-3 gap-5 mt-5">
-              <div className="flex flex-col gap-6 border-r pr-5">
+              <div className="flex flex-col gap-2 border-r pr-5">
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="w-full"
+                  onClick={() => setSelectedAssistant(DEFAULT_ASSISTANT)}
+                >
+                  + Create custom companion
+                </Button>
                 <div className="flex flex-col gap-2">
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className="w-full"
-                    onClick={() => setSelectedAssistant(DEFAULT_ASSISTANT)}
-                  >
-                    + Create custom companion
-                  </Button>
                   <Input
                     placeholder="Search suggested companions"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="bg-white"
                   />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <p>Suggested companions:</p>
                   <div className="flex flex-col max-h-[75vh] overflow-auto scrollbar-hide">
                     {filteredAssistants.map((assistant, index) => (
                       <div
