@@ -39,6 +39,39 @@ function ChatUI() {
 
   const isChatDisabled = isLoading || (user?.credits ?? 0) <= 0;
 
+  const onSuggestionClick = (suggestion: string) => {
+    if (!suggestion.trim()) return;
+    onSendMessage(suggestion);
+  };
+
+  const onSendMessage = async (suggestionMessage?: string) => {
+    if (!assistant) return;
+
+    const finalMessage = suggestionMessage || message;
+    if (!finalMessage.trim()) return;
+
+    setIsLoading(true);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { role: 'user', content: finalMessage },
+    ]);
+
+    const model = aiModelOptions.find(({ id }) => id === assistant.aiModelId);
+
+    // Only clear the input field if we're sending from the input
+    if (!suggestionMessage) setMessage('');
+
+    const result = await axios.post('/api/eden-ai-model', {
+      modelId: model?.id,
+      userMessage: finalMessage,
+      prevAssistantMessage: messages[messages?.length - 1]?.content,
+    });
+
+    setIsLoading(false);
+    setMessages((prevMessages) => [...prevMessages, { ...result.data }]);
+    updateUserCredits(result.data.content);
+  };
+
   useEffect(() => {
     // Scroll to the bottom of the chat when new messages are added
     if (scrollRef.current) {
@@ -49,31 +82,6 @@ function ChatUI() {
   useEffect(() => {
     setMessages([]);
   }, [assistant?.id]);
-
-  const onSendMessage = async () => {
-    if (!assistant) return;
-
-    setIsLoading(true);
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { role: 'user', content: message },
-    ]);
-
-    const model = aiModelOptions.find(({ id }) => id === assistant.aiModelId);
-
-    // Clear the input field immediately after sending the message
-    setMessage('');
-
-    const result = await axios.post('/api/eden-ai-model', {
-      modelId: model?.id,
-      userMessage: message,
-      prevAssistantMessage: messages[messages?.length - 1]?.content,
-    });
-
-    setIsLoading(false);
-    setMessages((prevMessages) => [...prevMessages, { ...result.data }]);
-    updateUserCredits(result.data.content);
-  };
 
   const updateUserCredits = async (contentMessage: string = '') => {
     if (!user) return;
@@ -98,7 +106,7 @@ function ChatUI() {
   return (
     <div className="flex flex-col h-full">
       {!messages?.length ? (
-        <ChatEmptyUI />
+        <ChatEmptyUI onSuggestionClick={onSuggestionClick} />
       ) : (
         <div
           ref={scrollRef}
@@ -133,7 +141,7 @@ function ChatUI() {
           onChange={(e) => setMessage(e.target.value)}
           onKeyUp={(e) => e.key === 'Enter' && onSendMessage()}
         />
-        <Button disabled={isChatDisabled} onClick={onSendMessage}>
+        <Button disabled={isChatDisabled} onClick={() => onSendMessage()}>
           <Send />
         </Button>
       </div>
