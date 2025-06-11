@@ -7,7 +7,11 @@ import { SparklesText } from '@/components/magicui/sparkles-text';
 import { AssistantContext } from '@/context/AssistantContext';
 import { BlurFade } from '@/components/magicui/blur-fade';
 
-function ChatEmptyUI() {
+interface ChatEmptyUIProps {
+  onSuggestionClick: (suggestion: string) => void;
+}
+
+function ChatEmptyUI({ onSuggestionClick }: ChatEmptyUIProps) {
   const { assistant } = useContext(AssistantContext);
 
   return (
@@ -21,7 +25,10 @@ function ChatEmptyUI() {
         {assistant?.sampleQuestions?.map(
           (suggestion: string, index: number) => (
             <BlurFade key={index} delay={0.2 * index}>
-              <h2 className="flex items-center justify-between p-4 text-lg border rounded-xl mt-1 hover:bg-gray-100 cursor-pointer gap-10">
+              <h2
+                onClick={() => onSuggestionClick(suggestion)}
+                className="flex items-center justify-between p-4 text-lg border rounded-xl mt-1 hover:bg-gray-100 cursor-pointer gap-10"
+              >
                 {suggestion}
                 <ChevronRight className="w-4 h-4" />
               </h2>
