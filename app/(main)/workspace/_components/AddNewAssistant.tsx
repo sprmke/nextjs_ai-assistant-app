@@ -138,7 +138,7 @@ function AddNewAssistant({
                   <div className="flex flex-col max-h-[75vh] overflow-auto scrollbar-hide">
                     {filteredAssistants.map((assistant, index) => (
                       <div
-                        className="p-2 hover:bg-secondary flex gap-2 items-center rounded-lg cursor-pointer"
+                        className="p-1.5 hover:bg-secondary flex gap-2 items-center rounded-lg cursor-pointer"
                         key={index}
                         onClick={() =>
                           setSelectedAssistant(
@@ -153,7 +153,7 @@ function AddNewAssistant({
                           alt={assistant.name}
                           className="w-[40px] h-[40px] object-cover rounded-lg"
                         />
-                        <p className="text-xs">{assistant.title}</p>
+                        <p className="text-sm">{assistant.title}</p>
                       </div>
                     ))}
                   </div>
