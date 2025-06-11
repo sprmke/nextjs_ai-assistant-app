@@ -127,7 +127,7 @@ function AddNewAssistant({
                     + Create custom companion
                   </Button>
                   <Input
-                    placeholder="Search companions"
+                    placeholder="Search suggested companions"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="bg-white"
