@@ -60,6 +60,7 @@ function AddNewAssistant({
   const addAssistants = useMutation(api.userAiAssistants.addAssistants);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedAssistant, setSelectedAssistant] =
     useState<AiAssistant>(DEFAULT_ASSISTANT);
 
@@ -70,6 +71,12 @@ function AddNewAssistant({
     aiModelId = 'google/gemini-2.0-flash',
     image,
   } = selectedAssistant ?? {};
+
+  const filteredAssistants = aiAssistantsList.filter(
+    (assistant) =>
+      assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      assistant.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const onHandleInputChange = (key: string, value: string) => {
     setSelectedAssistant((prevAssistantInfo) => ({
@@ -106,7 +113,7 @@ function AddNewAssistant({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="mb-2">Add new companion</DialogTitle>
+          <DialogTitle className="mb-2">Add New Companion</DialogTitle>
           <DialogDescription asChild>
             <div className="grid grid-cols-3 gap-5 mt-5">
               <div className="flex flex-col gap-6 border-r pr-5">
@@ -118,10 +125,16 @@ function AddNewAssistant({
                 >
                   + Create custom companion
                 </Button>
+                <Input
+                  placeholder="Search companions"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-white"
+                />
                 <div className="flex flex-col gap-2">
                   <p>Suggested companions:</p>
                   <div className="flex flex-col max-h-[75vh] overflow-auto scrollbar-hide">
-                    {aiAssistantsList.map((assistant, index) => (
+                    {filteredAssistants.map((assistant, index) => (
                       <div
                         className="p-2 hover:bg-secondary flex gap-2 items-center rounded-lg cursor-pointer"
                         key={index}
