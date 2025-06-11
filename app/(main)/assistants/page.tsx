@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,8 @@ import { AuthContext } from '@/context/AuthContext';
 import { aiAssistantsList } from '@/services/AiAssistantsList';
 import { AiAssistant, AiAssistants } from '@/app/(main)/types';
 
-import Hero from '../_components/Hero';
+// Type for the static assistant list items
+type StaticAssistant = Omit<AiAssistant, '_id' | 'userId' | 'aiModelId'>;
 
 function AIAssistants() {
   const router = useRouter();
@@ -29,9 +30,12 @@ function AIAssistants() {
   const addAssistants = useMutation(api.userAiAssistants.addAssistants);
 
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedAssistants, setSelectedAssistants] = useState<AiAssistants>(
-    []
-  );
+  const [selectedAssistants, setSelectedAssistants] = useState<
+    StaticAssistant[]
+  >([]);
+  const [availableAssistants, setAvailableAssistants] = useState<
+    StaticAssistant[]
+  >([]);
 
   useEffect(() => {
     if (!user) return;
@@ -49,20 +53,23 @@ function AIAssistants() {
         userId: user._id,
       }
     );
+    console.log('userAssistants::', userAssistants);
 
-    if (userAssistants.length) {
-      router.replace('/workspace');
-    } else {
-      setIsLoading(false);
-    }
+    // Filter out assistants that user already has
+    const filteredAssistants = aiAssistantsList.filter(
+      (assistant) => !userAssistants.some(({ id }) => id === assistant.id)
+    );
+
+    setAvailableAssistants(filteredAssistants);
+    setIsLoading(false);
   };
 
-  const isAssistantSelected = (assistant: AiAssistant) => {
-    return !!selectedAssistants.find(({ id }) => id == assistant.id);
+  const isAssistantSelected = (assistant: StaticAssistant) => {
+    return !!selectedAssistants.find(({ id }) => id === assistant.id);
   };
 
-  const selectAssistant = (assistant: AiAssistant) => {
-    const item = selectedAssistants.find(({ id }) => id == assistant.id);
+  const selectAssistant = (assistant: StaticAssistant) => {
+    const item = selectedAssistants.find(({ id }) => id === assistant.id);
 
     if (item) {
       setSelectedAssistants(
@@ -78,8 +85,8 @@ function AIAssistants() {
     if (!user) return;
     setIsLoading(true);
     await addAssistants({
-      aiAssistants: selectedAssistants.map((aiAssistant) => ({
-        ...aiAssistant,
+      aiAssistants: selectedAssistants.map((assistant) => ({
+        ...assistant,
         userId: user._id,
         aiModelId: 'google/gemini-2.0-flash',
       })),
@@ -94,58 +101,75 @@ function AIAssistants() {
     </div>
   ) : (
     <div className="px-10 mt-[64px] md:px-28 lg:px-36 xl:px-48 py-10">
-      <div className="flex justify-between items-center">
-        <div>
+      {availableAssistants.length === 0 ? (
+        <div className="flex flex-col items-center justify-center mt-20">
           <BlurFade delay={0.25} inView>
-            <h2 className="text-3xl font-bold">
-              Welcome to the space of AI Companions!
+            <h2 className="text-2xl font-bold text-center mb-6">
+              All suggested companions are already selected!
             </h2>
           </BlurFade>
-          <BlurFade delay={0.25 * 2} inView>
-            <p className="text-xl mt-2">
-              Choose your AI companion to simplify your tasks 🚀
-            </p>
+          <BlurFade delay={0.35} inView>
+            <RainbowButton onClick={() => router.replace('/workspace')}>
+              Go to workspace
+            </RainbowButton>
           </BlurFade>
         </div>
-        <RainbowButton
-          disabled={selectedAssistants?.length == 0 || isLoading}
-          onClick={saveSelectedAssistants}
-        >
-          {isLoading && <Loader2Icon className="animate-spin" />} Continue
-        </RainbowButton>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-10">
-        {aiAssistantsList.map((assistant, index) => (
-          <BlurFade key={index} delay={0.25 + index * 0.05} inView>
-            <div
-              className="hover:border p-3 rounded-xl hover:scale-105 
-                transition-all ease-in-out cursor-pointer relative"
-              onClick={() => selectAssistant(assistant as AiAssistant)}
-            >
-              <Checkbox
-                className="absolute m-2"
-                checked={isAssistantSelected(assistant as AiAssistant)}
-                variant="custom"
-                customColor="#ef4138"
-              />
-              <Image
-                src={assistant.image}
-                alt={assistant.title}
-                width={600}
-                height={600}
-                className="rounded-xl w-full h-[200px] object-cover"
-              />
-              <h2 className="text-center font-bold text-lg">
-                {assistant.name}
-              </h2>
-              <h2 className="text-center text-gray-600 dark:text-gray-300">
-                {assistant.title}
-              </h2>
+      ) : (
+        <Fragment>
+          <div className="flex justify-between items-center">
+            <div>
+              <BlurFade delay={0.25} inView>
+                <h2 className="text-3xl font-bold">
+                  Welcome to the space of AI Companions!
+                </h2>
+              </BlurFade>
+              <BlurFade delay={0.25 * 2} inView>
+                <p className="text-xl mt-2">
+                  Choose your AI companion to simplify your tasks 🚀
+                </p>
+              </BlurFade>
             </div>
-          </BlurFade>
-        ))}
-      </div>
+            <RainbowButton
+              disabled={selectedAssistants?.length == 0 || isLoading}
+              onClick={saveSelectedAssistants}
+            >
+              {isLoading && <Loader2Icon className="animate-spin" />} Continue
+            </RainbowButton>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mt-10">
+            {availableAssistants.map((assistant, index) => (
+              <BlurFade key={index} delay={0.25 + index * 0.05} inView>
+                <div
+                  className="hover:border p-3 rounded-xl hover:scale-105 
+                  transition-all ease-in-out cursor-pointer relative"
+                  onClick={() => selectAssistant(assistant)}
+                >
+                  <Checkbox
+                    className="absolute m-2"
+                    checked={isAssistantSelected(assistant)}
+                    variant="custom"
+                    customColor="#ef4138"
+                  />
+                  <Image
+                    src={assistant.image}
+                    alt={assistant.title}
+                    width={600}
+                    height={600}
+                    className="rounded-xl w-full h-[200px] object-cover"
+                  />
+                  <h2 className="text-center font-bold text-lg">
+                    {assistant.name}
+                  </h2>
+                  <h2 className="text-center text-gray-600 dark:text-gray-300">
+                    {assistant.title}
+                  </h2>
+                </div>
+              </BlurFade>
+            ))}
+          </div>
+        </Fragment>
+      )}
     </div>
   );
 }
