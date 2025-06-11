@@ -40,6 +40,7 @@ function AssistantList() {
   const [assistants, setAssistants] = useState<AiAssistants>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [openUserProfile, setOpenUserProfile] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (!user || assistant) return;
@@ -66,13 +67,24 @@ function AssistantList() {
     setIsLoading(false);
   };
 
+  const filteredAssistants = assistants.filter(
+    (assistant) =>
+      assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      assistant.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex flex-col p-5 bg-secondary border-r-[1px] h-[calc(100vh-64px)]">
       <AddNewAssistant onAddAssistant={getUserAssistants}>
         <Button className="w-full">+ Add New Companion</Button>
       </AddNewAssistant>
 
-      <Input className="bg-white mt-3" placeholder="Search assistant" />
+      <Input
+        className="bg-white mt-3"
+        placeholder="Search assistant"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
 
       <div className="my-3 overflow-y-auto scrollbar-hide flex-1">
         {isLoading ? (
@@ -80,7 +92,7 @@ function AssistantList() {
             <Loader2 className="animate-spin opacity-25" />
           </div>
         ) : (
-          assistants.map((_assistant, index) => (
+          filteredAssistants.map((_assistant, index) => (
             <BlurFade key={index} delay={0.25 + index * 0.05} inView>
               <div
                 className={`p-2 flex gap-3 items-center hover:bg-gray-200 hover:dark:bg-slate-700 rounded-xl cursor-pointer mt-2 ${_assistant.id == assistant?.id && 'bg-gray-200'}`}
