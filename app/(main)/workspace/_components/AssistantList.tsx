@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -122,21 +122,27 @@ function AssistantList() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex gap-3 items-center hover:bg-gray-200 w-full p-2 rounded-xl cursor-pointer bg-secondary">
-            {user && (
-              <Image
-                src={user?.picture}
-                alt="user"
-                width={35}
-                height={35}
-                className="rounded-full"
-              />
+            {user ? (
+              <Fragment>
+                <Image
+                  src={user?.picture}
+                  alt="user"
+                  width={35}
+                  height={35}
+                  className="rounded-full"
+                />
+                <div className="flex flex-col">
+                  <h2 className="font-bold">{user?.name}</h2>
+                  <h2 className="text-gray-400 text-sm">
+                    {user?.orderId ? 'Pro Plan' : 'Free Plan'}
+                  </h2>
+                </div>
+              </Fragment>
+            ) : (
+              <div className="flex justify-center items-center w-full min-h-[45px]">
+                <Loader2 className="animate-spin opacity-25" />
+              </div>
             )}
-            <div>
-              <h2 className="font-bold">{user?.name}</h2>
-              <h2 className="text-gray-400 text-sm">
-                {user?.orderId ? 'Pro Plan' : 'Free Plan'}
-              </h2>
-            </div>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[200px]" align="start">
