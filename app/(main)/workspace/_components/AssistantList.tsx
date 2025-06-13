@@ -30,11 +30,14 @@ import { AssistantContext } from '@/context/AssistantContext';
 import type { AiAssistants } from '@/app/(main)/types';
 
 import UserProfile from '@/app/(main)/workspace/_components/UserProfile';
+import { googleLogout } from '@react-oauth/google';
+import { useRouter } from 'next/navigation';
 
 function AssistantList() {
   const convex = useConvex();
+  const router = useRouter();
 
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const { assistant, setAssistant } = useContext(AssistantContext);
 
   const [assistants, setAssistants] = useState<AiAssistants>([]);
@@ -72,6 +75,17 @@ function AssistantList() {
       assistant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       assistant.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleLogout = () => {
+    // Revoke Google OAuth token
+    googleLogout();
+
+    // Clear user from context
+    setUser(null);
+
+    // Redirect to sign-in page
+    router.replace('/sign-in');
+  };
 
   return (
     <div className="flex flex-col p-5 bg-secondary border-r-[1px] h-[calc(100vh-64px)]">
@@ -152,7 +166,7 @@ function AssistantList() {
             <UserCircle2 />
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
             <LogOut />
             Logout
           </DropdownMenuItem>
