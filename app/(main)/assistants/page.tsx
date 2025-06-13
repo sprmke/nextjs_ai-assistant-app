@@ -53,7 +53,6 @@ function AIAssistants() {
         userId: user._id,
       }
     );
-    console.log('userAssistants::', userAssistants);
 
     // Filter out assistants that user already has
     const filteredAssistants = aiAssistantsList.filter(
