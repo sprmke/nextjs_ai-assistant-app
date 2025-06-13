@@ -63,6 +63,11 @@ function AssistantList() {
       }
     );
 
+    if (!assistants.length) {
+      router.push('/assistants');
+      return;
+    }
+
     const [assistant] = assistants ?? [];
 
     setAssistant(assistant);
