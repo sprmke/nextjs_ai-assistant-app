@@ -49,7 +49,7 @@ function AssistantList() {
     if (!user) return;
 
     getUserAssistants();
-  }, [user]);
+  }, [user, assistant]);
 
   const getUserAssistants = async () => {
     if (!user) return;
