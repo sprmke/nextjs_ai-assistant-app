@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { googleLogout } from '@react-oauth/google';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,9 +21,20 @@ import {
 import { UserCircle2 } from 'lucide-react';
 
 function Header() {
-  const { user } = useContext(AuthContext);
-
+  const { user, setUser } = useContext(AuthContext);
+  const router = useRouter();
   const [openUserProfile, setOpenUserProfile] = useState(false);
+
+  const handleLogout = () => {
+    // Revoke Google OAuth token
+    googleLogout();
+
+    // Clear user from context
+    setUser(null);
+
+    // Redirect to sign-in page
+    router.replace('/sign-in');
+  };
 
   return (
     <div className="top-0 bg-white p-3 shadow-sm w-full flex justify-between items-center px-5 fixed z-10">
@@ -52,7 +65,7 @@ function Header() {
             <UserCircle2 />
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
             <LogOut />
             Logout
           </DropdownMenuItem>

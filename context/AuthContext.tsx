@@ -4,7 +4,7 @@ import { User } from '@/app/(main)/types';
 
 type AuthContextType = {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
