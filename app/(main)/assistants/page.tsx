@@ -129,7 +129,7 @@ function AIAssistants() {
               </BlurFade>
             </div>
             <RainbowButton
-              disabled={selectedAssistants?.length == 0 || isLoading}
+              disabled={isLoading}
               onClick={saveSelectedAssistants}
             >
               {isLoading && <Loader2Icon className="animate-spin" />} Continue
