@@ -63,7 +63,7 @@ function Hero() {
               </Link>
             ) : (
               <Link href="/sign-in">
-                <RainbowButton>Get Started for Free</RainbowButton>
+                <RainbowButton>Get Started</RainbowButton>
               </Link>
             )}
             <Link href="/assistants">
