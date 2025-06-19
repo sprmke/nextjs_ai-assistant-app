@@ -141,7 +141,10 @@ function ChatUI() {
           onChange={(e) => setMessage(e.target.value)}
           onKeyUp={(e) => e.key === 'Enter' && onSendMessage()}
         />
-        <Button disabled={isChatDisabled} onClick={() => onSendMessage()}>
+        <Button
+          disabled={isChatDisabled || !message.trim()}
+          onClick={() => onSendMessage()}
+        >
           <Send />
         </Button>
       </div>
