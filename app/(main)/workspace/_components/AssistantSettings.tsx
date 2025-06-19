@@ -71,7 +71,7 @@ function AssistantSettings() {
   };
 
   return (
-    <div className="flex flex-col justify-between p-5 bg-secondary border-l-[1px] h-[calc(100vh-64px)]">
+    <div className="flex flex-col justify-between p-5 gap-3 bg-secondary border-l-[1px] h-[calc(100vh-64px)] overflow-y-auto scrollbar-hide">
       {!assistant ? (
         <div className="flex justify-center items-center h-full">
           <Loader2 className="animate-spin opacity-25" />
