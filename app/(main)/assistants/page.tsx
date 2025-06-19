@@ -30,12 +30,21 @@ function AIAssistants() {
   const addAssistants = useMutation(api.userAiAssistants.addAssistants);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isContinueDisabled, setIsContinueDisabled] = useState(false);
   const [selectedAssistants, setSelectedAssistants] = useState<
     StaticAssistant[]
   >([]);
   const [availableAssistants, setAvailableAssistants] = useState<
     StaticAssistant[]
   >([]);
+
+  useEffect(() => {
+    // Disable continue button if no assistants are selected and all assistants are available
+    setIsContinueDisabled(
+      !selectedAssistants.length &&
+        availableAssistants.length === aiAssistantsList.length
+    );
+  }, [selectedAssistants, availableAssistants]);
 
   useEffect(() => {
     if (!user) return;
@@ -129,10 +138,13 @@ function AIAssistants() {
               </BlurFade>
             </div>
             <RainbowButton
-              disabled={isLoading}
+              disabled={isContinueDisabled}
               onClick={saveSelectedAssistants}
             >
-              {isLoading && <Loader2Icon className="animate-spin" />} Continue
+              {isLoading && !isContinueDisabled && (
+                <Loader2Icon className="animate-spin" />
+              )}{' '}
+              Continue
             </RainbowButton>
           </div>
 
