@@ -36,7 +36,9 @@ function ChatMessage({
             role === 'user' ? 'bg-gray-200' : 'bg-gray-50'
           } ${isLoading ? 'flex-row' : 'flex-col'}`}
         >
-          {isLoading && <Loader2Icon className="w-4 h-4 animate-spin" />}
+          {isLoading && (
+            <Loader2Icon className="w-4 h-4 animate-spin relative top-1" />
+          )}
           <Markdown>{content}</Markdown>
         </div>
       </div>
