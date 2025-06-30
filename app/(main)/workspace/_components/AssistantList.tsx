@@ -46,7 +46,7 @@ function AssistantList() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || assistant) return;
 
     getUserAssistants();
   }, [user, assistant === null]);
