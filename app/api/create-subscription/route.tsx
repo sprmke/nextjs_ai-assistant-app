@@ -1,24 +1,29 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
-import Razorpay from 'razorpay';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2023-10-16',
+});
 
-export async function POST() {
-  const instance = new Razorpay({
-    key_id: process.env.RAZORPAY_LIVE_KEY,
-    key_secret: process.env.RAZORPAY_SECRET_KEY,
-  });
+export async function POST(req: NextRequest) {
+  try {
+    const { customerId, priceId } = await req.json();
 
-  const subscription = await instance.subscriptions.create({
-    plan_id: process.env.RAZORPAY_PLAN_ID!,
-    customer_notify: 1,
-    quantity: 1,
-    total_count: 12,
-    addons: [],
-    notes: {
-      key1: 'value3',
-      key2: 'value2',
-    },
-  });
+    // Create a subscription
+    const subscription = await stripe.subscriptions.create({
+      customer: customerId,
+      items: [{ price: priceId }],
+      payment_behavior: 'default_incomplete',
+      payment_settings: { save_default_payment_method: 'on_subscription' },
+      expand: ['latest_invoice.payment_intent'],
+    });
 
-  return NextResponse.json(subscription);
+    return NextResponse.json(subscription);
+  } catch (error) {
+    console.error('Error creating subscription:', error);
+    return NextResponse.json(
+      { error: 'Failed to create subscription' },
+      { status: 500 }
+    );
+  }
 }

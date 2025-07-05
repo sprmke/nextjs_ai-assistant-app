@@ -1,16 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
-import Razorpay from 'razorpay';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2023-10-16',
+});
 
 export async function POST(req: NextRequest) {
-  const { subscriptionId } = await req.json();
+  try {
+    const { subscriptionId } = await req.json();
 
-  const instance = new Razorpay({
-    key_id: process.env.RAZORPAY_LIVE_KEY,
-    key_secret: process.env.RAZORPAY_SECRET_KEY,
-  });
+    // Cancel the subscription at period end
+    const subscription = await stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: true,
+    });
 
-  const subscription = await instance.subscriptions.cancel(subscriptionId);
-
-  return NextResponse.json(subscription);
+    return NextResponse.json(subscription);
+  } catch (error) {
+    console.error('Error canceling subscription:', error);
+    return NextResponse.json(
+      { error: 'Failed to cancel subscription' },
+      { status: 500 }
+    );
+  }
 }
