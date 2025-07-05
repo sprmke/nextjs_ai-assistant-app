@@ -90,3 +90,16 @@ export const UpdateUserStripeCustomerId = mutation({
     return result;
   },
 });
+
+export const ClearUserOrderId = mutation({
+  args: {
+    userId: v.id('users'),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.patch(args.userId, {
+      orderId: undefined,
+    });
+
+    return result;
+  },
+});

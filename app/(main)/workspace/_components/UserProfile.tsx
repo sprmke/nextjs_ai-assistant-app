@@ -19,6 +19,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 
@@ -34,7 +45,7 @@ function UserProfile({
   openUserProfile: boolean;
   setOpenUserProfile: (open: boolean) => void;
 }) {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const userCredits = (user?.credits ?? 0) >= 0 ? (user?.credits ?? 0) : 0;
 
@@ -42,6 +53,7 @@ function UserProfile({
 
   const [userMaxToken, setUserMaxToken] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCanceling, setIsCanceling] = useState(false);
 
   useEffect(() => {
     setUserMaxToken(user?.orderId ? PRO_PLAN_CREDITS : FREE_PLAN_CREDITS);
@@ -79,17 +91,34 @@ function UserProfile({
   };
 
   const cancelSubscription = async () => {
+    if (!user) return;
+
+    setIsCanceling(true);
     try {
-      await axios.post('/api/cancel-subscription', {
-        subscriptionId: user?.orderId,
+      const response = await axios.post('/api/cancel-subscription', {
+        subscriptionId: user.orderId,
+        userId: user._id,
       });
-      toast.success(
-        'Subscription will be canceled at the end of the current period'
-      );
-      window.location.reload();
+
+      if (response.data.success) {
+        // Update local user state
+        setUser({
+          ...user,
+          orderId: undefined,
+        });
+
+        toast.success(
+          response.data.message ||
+            'Subscription will be canceled at the end of the current period'
+        );
+      } else {
+        toast.error('Failed to cancel subscription');
+      }
     } catch (error) {
       console.error('Error canceling subscription:', error);
       toast.error('Failed to cancel subscription');
+    } finally {
+      setIsCanceling(false);
     }
   };
 
@@ -161,13 +190,38 @@ function UserProfile({
                 </Button>
               </div>
             ) : (
-              <Button
-                className="mt-4 w-full"
-                variant="secondary"
-                onClick={cancelSubscription}
-              >
-                Cancel Subscription
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="mt-4 w-full"
+                    variant="secondary"
+                    disabled={isCanceling}
+                  >
+                    {isCanceling ? (
+                      <Loader2Icon className="animate-spin" />
+                    ) : (
+                      'Cancel Subscription'
+                    )}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Cancel Subscription</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to cancel your subscription? You'll
+                      continue to have access to your Pro Plan features until
+                      the end of your current billing period. After that, you'll
+                      be downgraded to the Free Plan.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Keep Subscription</AlertDialogCancel>
+                    <AlertDialogAction onClick={cancelSubscription}>
+                      Cancel Subscription
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
         </div>
