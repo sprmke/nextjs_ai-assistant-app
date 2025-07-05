@@ -20,6 +20,7 @@ export default defineSchema({
     picture: v.string(),
     credits: v.number(),
     orderId: v.optional(v.string()),
+    stripeCustomerId: v.optional(v.string()),
   }),
   userAiAssistants: defineTable(aiAssistant),
 });
