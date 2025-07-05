@@ -47,67 +47,50 @@ function UserProfile({
     setUserMaxToken(user?.orderId ? PRO_PLAN_CREDITS : FREE_PLAN_CREDITS);
   }, [user?.orderId]);
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.async = true;
-    script.onload = () => console.log('Razorpay script loaded');
-    document.body.appendChild(script);
+  const createCheckoutSession = async () => {
+    if (!user) return;
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  const createSubscription = async () => {
     setIsLoading(true);
-    const result = await axios.post('/api/create-subscription');
-    setIsLoading(false);
-    makePayment(result?.data?.id);
+    try {
+      // First, create or get customer
+      const customerResponse = await axios.post('/api/create-customer', {
+        email: user.email,
+        name: user.name,
+      });
+
+      const customerId = customerResponse.data.id;
+
+      // Create checkout session
+      const sessionResponse = await axios.post('/api/create-checkout-session', {
+        customerId,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+        successUrl: `${window.location.origin}/workspace/success`,
+        cancelUrl: `${window.location.origin}/workspace`,
+      });
+
+      // Redirect to Stripe Checkout
+      window.location.href = sessionResponse.data.url;
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+      toast.error('Failed to create checkout session');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const cancelSubscription = async () => {
-    const result = await axios.post('/api/cancel-subscription', {
-      subscriptionId: user?.orderId,
-    });
-    console.log(result);
-    toast('Subscription Canceled');
-    window.location.reload();
-  };
-
-  const makePayment = async (subscriptionId?: string) => {
-    if (!subscriptionId || !user) return;
-
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_LIVE_KEY,
-      subscription_id: subscriptionId,
-      name: 'AI Assistant App',
-      description: 'AI Assistant App Subscription',
-      image: '/logo.svg',
-      // @ts-ignore
-      handler: function (response: any) {
-        if (!user._id || !response?.razorpay_payment_id) return;
-
-        console.log(response);
-        updateUserTokens({
-          userId: user._id,
-          credits: user.credits + PRO_PLAN_CREDITS,
-          orderId: response.razorpay_payment_id,
-        });
-      },
-      prefill: {
-        name: user.name,
-        email: user.email,
-      },
-      notes: {},
-      theme: {
-        color: '#000000',
-      },
-    };
-
-    // @ts-ignore
-    const razorpay = new window.Razorpay(options);
-    razorpay.open();
+    try {
+      await axios.post('/api/cancel-subscription', {
+        subscriptionId: user?.orderId,
+      });
+      toast.success(
+        'Subscription will be canceled at the end of the current period'
+      );
+      window.location.reload();
+    } catch (error) {
+      console.error('Error canceling subscription:', error);
+      toast.error('Failed to cancel subscription');
+    }
   };
 
   return (
@@ -167,7 +150,7 @@ function UserProfile({
                 <Button
                   className="w-full"
                   disabled={isLoading}
-                  onClick={createSubscription}
+                  onClick={createCheckoutSession}
                 >
                   {isLoading ? (
                     <Loader2Icon className="animate-spin" />

@@ -11,6 +11,7 @@ export type AiAssistant = {
   sampleQuestions: string[];
   aiModelId?: string;
   userId?: string;
+  _creationTime?: number;
 };
 
 export type AiAssistants = AiAssistant[];
@@ -23,4 +24,5 @@ export type User = {
   _id: Id<'users'>;
   _creationTime: number;
   orderId?: string;
+  stripeCustomerId?: string;
 };
