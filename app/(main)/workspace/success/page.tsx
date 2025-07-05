@@ -1,8 +1,8 @@
 'use client';
 
-import { useContext, useEffect, Suspense } from 'react';
+import { useContext, useEffect, Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useMutation } from 'convex/react';
+import { useMutation, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { AuthContext } from '@/context/AuthContext';
 import { toast } from 'sonner';
@@ -12,61 +12,67 @@ function SuccessPageContent() {
   const searchParams = useSearchParams();
   const { user, setUser } = useContext(AuthContext);
   const updateUserTokens = useMutation(api.users.UpdateUserTokens);
+  const [isChecking, setIsChecking] = useState(true);
+
+  // Get the latest user data
+  const currentUser = useQuery(api.users.GetUser, { email: user?.email || '' });
 
   useEffect(() => {
-    const sessionId = searchParams.get('session_id');
+    const checkAndUpdateCredits = async () => {
+      if (!user || !currentUser) return;
 
-    if (sessionId && user) {
-      // Verify the session and update user credits
-      const verifySession = async () => {
+      // Check if credits were already updated by webhook
+      const creditsWereUpdated = currentUser.credits > user.credits;
+
+      if (!creditsWereUpdated) {
+        console.log('Credits not updated by webhook, attempting manual update');
+
+        // Try to update credits manually (fallback)
         try {
-          const response = await fetch('/api/retrieve-session', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ sessionId }),
+          await updateUserTokens({
+            userId: user._id,
+            credits: user.credits + 10000, // PRO_PLAN_CREDITS
+            orderId: currentUser.orderId || 'manual_update',
           });
 
-          if (response.ok) {
-            const session = await response.json();
+          // Update local user state
+          setUser({
+            ...user,
+            credits: user.credits + 10000,
+            orderId: currentUser.orderId || 'manual_update',
+          });
 
-            if (session.payment_status === 'paid' && session.subscription) {
-              // Update user credits and subscription ID
-              await updateUserTokens({
-                userId: user._id,
-                credits: user.credits + 10000, // PRO_PLAN_CREDITS
-                orderId: session.subscription,
-              });
-
-              // Update local user state
-              setUser({
-                ...user,
-                credits: user.credits + 10000,
-                orderId: session.subscription,
-              });
-
-              toast.success(
-                'Payment successful! Your credits have been updated.'
-              );
-            }
-          }
+          toast.success('Payment successful! Your credits have been updated.');
         } catch (error) {
-          console.error('Error verifying session:', error);
-          toast.error('There was an issue verifying your payment.');
+          console.error('Error updating credits manually:', error);
+          toast.error(
+            'Payment successful, but there was an issue updating your credits. Please contact support.'
+          );
         }
-      };
+      } else {
+        console.log('Credits already updated by webhook');
+        toast.success('Payment successful! Your credits have been updated.');
+      }
 
-      verifySession();
-    }
+      setIsChecking(false);
+    };
 
-    // Redirect back to workspace after a short delay
-    const timer = setTimeout(() => {
-      router.push('/workspace');
-    }, 3000);
+    // Wait a bit for webhook to process, then check
+    const timer = setTimeout(checkAndUpdateCredits, 2000);
 
     return () => clearTimeout(timer);
-  }, [searchParams, user, router, setUser, updateUserTokens]);
+  }, [user, currentUser, updateUserTokens, setUser]);
+
+  useEffect(() => {
+    if (!isChecking) {
+      // Redirect back to workspace after checking is complete
+      const timer = setTimeout(() => {
+        router.push('/workspace');
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isChecking, router]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -75,6 +81,11 @@ function SuccessPageContent() {
         <p className="text-gray-600 mb-4">
           Thank you for your purchase. Your credits have been updated.
         </p>
+        {isChecking && (
+          <p className="text-sm text-gray-500 mb-4">
+            Verifying your payment...
+          </p>
+        )}
         <p className="text-sm text-gray-500">
           Redirecting you back to the workspace...
         </p>
