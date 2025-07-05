@@ -46,6 +46,21 @@ export const GetUser = query({
   },
 });
 
+export const GetUserByStripeCustomerId = query({
+  args: {
+    stripeCustomerId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db
+      .query('users')
+      .filter((q) => q.eq(q.field('stripeCustomerId'), args.stripeCustomerId))
+      .collect();
+    const [user] = result ?? [];
+
+    return user;
+  },
+});
+
 export const UpdateUserTokens = mutation({
   args: {
     userId: v.id('users'),
@@ -56,6 +71,20 @@ export const UpdateUserTokens = mutation({
     const result = await ctx.db.patch(args.userId, {
       credits: args.credits,
       ...(args.orderId && { orderId: args.orderId }),
+    });
+
+    return result;
+  },
+});
+
+export const UpdateUserStripeCustomerId = mutation({
+  args: {
+    userId: v.id('users'),
+    stripeCustomerId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.patch(args.userId, {
+      stripeCustomerId: args.stripeCustomerId,
     });
 
     return result;
