@@ -23,8 +23,8 @@ export const CreateUser = mutation({
         picture: args.picture,
         credits: 5000,
       };
-      await ctx.db.insert('users', userData);
-      return userData;
+      const userId = await ctx.db.insert('users', userData);
+      return { ...userData, _id: userId };
     }
 
     return user;
