@@ -46,13 +46,13 @@ function AssistantList() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    if (!user || assistant) return;
+    if (!user?._id || assistant) return;
 
     getUserAssistants();
   }, [user, assistant === null]);
 
   const getUserAssistants = async () => {
-    if (!user) return;
+    if (!user?._id) return;
     setIsLoading(true);
     setAssistants([]);
 

@@ -86,7 +86,7 @@ function AddNewAssistant({
   };
 
   const addAssistant = async () => {
-    if (!user || !name || !title || !userInstruction) {
+    if (!user?._id || !name || !title || !userInstruction) {
       return;
     }
 

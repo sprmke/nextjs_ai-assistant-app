@@ -47,9 +47,16 @@ function Provider({
       const result = await convex.query(api.users.GetUser, {
         email: user?.email,
       });
-      setUser(result);
+
+      if (result) {
+        setUser(result);
+      } else {
+        console.error('User not found in database');
+        router.replace('/sign-in');
+      }
     } catch (error) {
       console.error('CheckUseAuth error::', error);
+      router.replace('/sign-in');
     }
   };
 

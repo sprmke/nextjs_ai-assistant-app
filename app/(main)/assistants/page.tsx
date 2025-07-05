@@ -47,13 +47,13 @@ function AIAssistants() {
   }, [selectedAssistants, availableAssistants]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user?._id) return;
 
     getUserAssistants();
   }, [user]);
 
   const getUserAssistants = async () => {
-    if (!user) return;
+    if (!user?._id) return;
 
     setIsLoading(true);
     const userAssistants = await convex.query(
@@ -90,7 +90,7 @@ function AIAssistants() {
   };
 
   const saveSelectedAssistants = async () => {
-    if (!user) return;
+    if (!user?._id) return;
     setIsLoading(true);
     await addAssistants({
       aiAssistants: selectedAssistants.map((assistant) => ({
