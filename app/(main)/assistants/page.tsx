@@ -152,7 +152,7 @@ function AIAssistants() {
             {availableAssistants.map((assistant, index) => (
               <BlurFade key={index} delay={0.25 + index * 0.05} inView>
                 <div
-                  className="hover:border p-3 rounded-xl hover:scale-105 
+                  className="hover:opacity-80 p-3 rounded-xl 
                   transition-all ease-in-out cursor-pointer relative"
                   onClick={() => selectAssistant(assistant)}
                 >
