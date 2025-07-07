@@ -37,7 +37,7 @@ function Header() {
   };
 
   return (
-    <div className="top-0 bg-white p-3 shadow-sm w-full flex justify-between items-center px-5 fixed z-10">
+    <div className="top-0 bg-white p-3 shadow-sm w-full flex justify-between items-center px-5 fixed z-20">
       <Link href="/">
         <Image src={'/logo.svg'} alt="App Logo" width={40} height={40} />
       </Link>
