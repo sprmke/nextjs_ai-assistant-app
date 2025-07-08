@@ -194,6 +194,7 @@ function AddNewAssistant({
                 <div className="flex flex-col gap-1">
                   <h2 className="text-gray-500">Model:</h2>
                   <Select
+                    disabled
                     value={aiModelId}
                     onValueChange={(value) =>
                       onHandleInputChange('aiModelId', value)
@@ -224,6 +225,7 @@ function AddNewAssistant({
                 <div className="flex flex-col gap-1 flex-1">
                   <h2 className="text-gray-500">Instructions:</h2>
                   <Textarea
+                    disabled
                     placeholder="Add Instructions"
                     value={userInstruction}
                     className="min-h-[200px]"
