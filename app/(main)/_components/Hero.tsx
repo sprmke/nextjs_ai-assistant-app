@@ -53,7 +53,7 @@ function Hero() {
 
           <p className="text-lg text-muted-foreground max-w-2xl">
             Experience the future of personal assistance with our customizable
-            AI companions. They're here to help, learn and grow with you.
+            AI companions.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mt-5">
