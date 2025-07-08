@@ -100,6 +100,7 @@ function AssistantSettings() {
               <div className="mt-4">
                 <h2 className="text-gray-500">Model:</h2>
                 <Select
+                  disabled
                   defaultValue={assistant.aiModelId}
                   onValueChange={(value) =>
                     onHandleInputChange('aiModelId', value)
@@ -131,6 +132,7 @@ function AssistantSettings() {
               <div className="mt-4">
                 <h2 className="text-gray-500">Instructions:</h2>
                 <Textarea
+                  disabled
                   placeholder="Add Instructions"
                   className="h-[180px] bg-white"
                   value={assistant?.userInstruction}
