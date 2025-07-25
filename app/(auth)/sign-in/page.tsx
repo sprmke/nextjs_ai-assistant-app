@@ -54,7 +54,13 @@ function SignIn() {
         <Image src={'/logo.svg'} alt="App Logo" width={50} height={50} />
         <h2 className="text-2xl">Sign In</h2>
 
-        <Button onClick={() => googleLogin()}>Sign in with Google</Button>
+        <Button
+          onClick={() => googleLogin()}
+          className="flex items-center gap-2"
+        >
+          <Image src="/google.png" alt="Google" width={20} height={20} />
+          Sign in with Google
+        </Button>
       </div>
     </div>
   );
