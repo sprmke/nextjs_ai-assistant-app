@@ -133,7 +133,7 @@ function AIAssistants() {
               </BlurFade>
               <BlurFade delay={0.25 * 2} inView>
                 <p className="text-xl mt-2">
-                  Choose your AI companion to simplify your tasks 🚀
+                  Choose your AI companion to help you with your tasks 🚀
                 </p>
               </BlurFade>
             </div>
