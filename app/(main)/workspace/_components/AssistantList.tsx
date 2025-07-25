@@ -167,11 +167,14 @@ function AssistantList() {
         <DropdownMenuContent className="w-[200px]" align="start">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setOpenUserProfile(true)}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => setOpenUserProfile(true)}
+          >
             <UserCircle2 />
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
             <LogOut />
             Logout
           </DropdownMenuItem>
